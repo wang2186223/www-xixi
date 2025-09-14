@@ -1093,10 +1093,55 @@
             });
         }
 
-        // 页面加载时初始化阅读历史和内容检查
+        // 强制获取最新首页内容（不清除缓存）
+        function ensureFreshContent() {
+            // 每次访问首页时，通过添加时间戳参数来绕过页面缓存
+            const urlParams = new URLSearchParams(window.location.search);
+            const refreshParam = urlParams.get('v');
+            const currentTime = new Date().getTime();
+            
+            // 如果没有版本参数，或版本参数过旧（超过1分钟），则刷新
+            if (!refreshParam || (currentTime - parseInt(refreshParam)) > 60000) {
+                const newUrl = window.location.pathname + '?v=' + currentTime;
+                if (window.location.href !== window.location.origin + newUrl) {
+                    window.history.replaceState({}, '', newUrl);
+                    window.location.reload();
+                }
+            }
+        }
+
+        // 随机重新排列Featured Novels
+        function shuffleFeaturedNovels() {
+            const featuredGrid = document.querySelector('.featured .cards-grid');
+            if (!featuredGrid) return;
+
+            const allCards = Array.from(featuredGrid.children);
+            if (allCards.length <= 1) return;
+
+            // Fisher-Yates洗牌算法
+            for (let i = allCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                featuredGrid.insertBefore(allCards[j], allCards[i].nextSibling);
+            }
+
+            // 添加重新加载动画效果
+            featuredGrid.style.opacity = '0';
+            setTimeout(() => {
+                featuredGrid.style.transition = 'opacity 0.3s ease-in-out';
+                featuredGrid.style.opacity = '1';
+            }, 50);
+        }
+
+        // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
             loadReadingHistory();
             checkForNewContent();
+            
+            // 确保获取最新内容
+            ensureFreshContent();
+            
+            // 随机化Featured Novels显示顺序
+            setTimeout(shuffleFeaturedNovels, 500); // 延迟确保DOM完全加载
         });
     </script>
 </body>
