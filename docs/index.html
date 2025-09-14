@@ -972,9 +972,87 @@
             loadReadingHistory();
         }
 
-        // 页面加载时初始化阅读历史
+        // 检查是否有新内容的轻量级机制
+        function checkForNewContent() {
+            const lastCheck = localStorage.getItem('lastContentCheck');
+            const currentTime = new Date().getTime();
+            
+            // 如果超过6小时没检查，或者是首次访问，则检查新内容
+            if (!lastCheck || (currentTime - parseInt(lastCheck)) > 6 * 60 * 60 * 1000) {
+                // 检查页面上的小说数量
+                const novelCount = document.querySelectorAll('.novel-card').length;
+                const lastNovelCount = localStorage.getItem('lastNovelCount');
+                
+                if (lastNovelCount && parseInt(lastNovelCount) < novelCount) {
+                    // 发现新小说，显示提示
+                    showNewContentNotification();
+                }
+                
+                // 更新记录
+                localStorage.setItem('lastContentCheck', currentTime.toString());
+                localStorage.setItem('lastNovelCount', novelCount.toString());
+            }
+        }
+        
+        function showNewContentNotification() {
+            // 创建一个温和的提示，不会干扰阅读历史
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #ff6b6b, #9c89b8);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                font-size: 14px;
+                cursor: pointer;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-sparkles" style="color: #ffeb3b;"></i>
+                    <span>发现新小说！</span>
+                    <i class="fas fa-times" style="margin-left: 10px; font-size: 12px; opacity: 0.7;"></i>
+                </div>
+            `;
+            
+            // 添加CSS动画
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 3000);
+            
+            // 点击关闭
+            notification.addEventListener('click', () => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => notification.remove(), 300);
+            });
+        }
+
+        // 页面加载时初始化阅读历史和内容检查
         document.addEventListener('DOMContentLoaded', function() {
             loadReadingHistory();
+            checkForNewContent();
         });
     </script>
 </body>
