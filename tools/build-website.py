@@ -251,7 +251,7 @@ class WebsiteBuilder:
         novel_list.sort(key=lambda x: x.get('last_updated', ''), reverse=True)
         
         # 准备不同分类的小说
-        featured_novels = self.prepare_novel_cards(novel_list[:8])  # 精选8本
+        featured_novels = self.prepare_novel_cards(novel_list[:5])  # 精选5本
         new_novels = self.prepare_novel_cards(novel_list[:12])      # 最新12本
         popular_novels = self.prepare_novel_cards(novel_list[:12])  # 热门12本（暂时用最新的）
         recommended_novels = self.prepare_novel_cards(novel_list[:8]) # 推荐8本
