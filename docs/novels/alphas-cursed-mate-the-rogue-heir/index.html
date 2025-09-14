@@ -1391,8 +1391,9 @@
             const chapterItems = document.querySelectorAll('.chapter-item a');
             chapterItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    // In actual implementation, this would navigate to the reading page
+                    // 让链接正常跳转，只是添加一些日志
                     console.log('Opening chapter: ' + this.querySelector('.chapter-title').textContent);
+                    // 不要阻止默认行为，让链接正常工作
                 });
             });
         });

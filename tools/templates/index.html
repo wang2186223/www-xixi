@@ -590,10 +590,12 @@
                 {% for novel in featured_novels %}
                 <div class="novel-card">
                     <div class="cover-container">
-                        <img src="{{ novel.cover_url }}" alt="{{ novel.title }}" class="novel-cover">
+                        <a href="{{ novel.url }}">
+                            <img src="{{ novel.cover_url }}" alt="{{ novel.title }}" class="novel-cover">
+                        </a>
                     </div>
                     <div class="card-content">
-                        <h3 class="novel-title">{{ novel.title }}</h3>
+                        <h3 class="novel-title"><a href="{{ novel.url }}" style="color: inherit; text-decoration: none;">{{ novel.title }}</a></h3>
                         <p class="novel-desc">{{ novel.description }}</p>
                         <div class="tags">
                             {% for tag in novel.tags %}
@@ -653,10 +655,12 @@
                 {% for novel in recommended_novels %}
                 <div class="novel-card">
                     <div class="cover-container">
-                        <img src="{{ novel.cover_url }}" alt="{{ novel.title }}" class="novel-cover">
+                        <a href="{{ novel.url }}">
+                            <img src="{{ novel.cover_url }}" alt="{{ novel.title }}" class="novel-cover">
+                        </a>
                     </div>
                     <div class="card-content">
-                        <h3 class="novel-title">{{ novel.title }}</h3>
+                        <h3 class="novel-title"><a href="{{ novel.url }}" style="color: inherit; text-decoration: none;">{{ novel.title }}</a></h3>
                         <p class="novel-desc">{{ novel.description }}</p>
                         <div class="tags">
                             {% for tag in novel.tags %}
