@@ -266,12 +266,16 @@ class WebsiteBuilder:
         # 准备分类数据
         categories = self.prepare_categories(novels)
         
+        # 准备所有小说数据用于推荐区域
+        all_novels = self.prepare_novel_cards(novel_list)
+        
         # 渲染首页
         html_content = template.render(
             featured_novels=featured_novels,
             new_novels=new_novels,
             popular_novels=popular_novels,
             recommended_novels=recommended_novels,
+            all_novels=all_novels,
             categories=categories,
             canonical_url=f"{self.site_url}/",
             site_url=self.site_url
