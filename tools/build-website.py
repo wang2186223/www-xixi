@@ -252,10 +252,12 @@ class WebsiteBuilder:
         novel_list.sort(key=lambda x: x.get('last_updated', ''), reverse=True)
         
         # 准备不同分类的小说
-        # Featured Novels: 从所有小说中随机选择5本，让用户每次访问都有新鲜感
-        random_novels = novel_list.copy()  # 复制列表避免影响原排序
-        random.shuffle(random_novels)      # 随机打乱
-        featured_novels = self.prepare_novel_cards(random_novels[:5])  # 随机选择5本
+        # Featured Novels: 从整个小说库中真正随机选择5本（或全部，如果小说总数少于5本）
+        featured_count = min(5, len(novel_list))  # 确保不超过实际小说数量
+        if len(novel_list) > 0:
+            featured_novels = self.prepare_novel_cards(random.sample(novel_list, featured_count))
+        else:
+            featured_novels = []
         
         new_novels = self.prepare_novel_cards(novel_list[:12])      # 最新12本
         popular_novels = self.prepare_novel_cards(novel_list[:12])  # 热门12本（暂时用最新的）
