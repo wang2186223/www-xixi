@@ -10,6 +10,7 @@ import sys
 import json
 import shutil
 import argparse
+import random
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
@@ -251,7 +252,11 @@ class WebsiteBuilder:
         novel_list.sort(key=lambda x: x.get('last_updated', ''), reverse=True)
         
         # 准备不同分类的小说
-        featured_novels = self.prepare_novel_cards(novel_list[:5])  # 精选5本
+        # Featured Novels: 从所有小说中随机选择5本，让用户每次访问都有新鲜感
+        random_novels = novel_list.copy()  # 复制列表避免影响原排序
+        random.shuffle(random_novels)      # 随机打乱
+        featured_novels = self.prepare_novel_cards(random_novels[:5])  # 随机选择5本
+        
         new_novels = self.prepare_novel_cards(novel_list[:12])      # 最新12本
         popular_novels = self.prepare_novel_cards(novel_list[:12])  # 热门12本（暂时用最新的）
         recommended_novels = self.prepare_novel_cards(novel_list[:8]) # 推荐8本
