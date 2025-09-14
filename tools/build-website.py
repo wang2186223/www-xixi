@@ -141,7 +141,8 @@ class WebsiteBuilder:
         # 准备章节数据
         chapters = []
         for i, chapter in enumerate(novel_data['chapters']):
-            chapter_url = f"chapter-{chapter['number']}.html"
+            # 使用绝对路径而不是相对路径
+            chapter_url = f"/novels/{novel_data['slug']}/chapter-{chapter['number']}"
             chapters.append({
                 'number': chapter['number'],
                 'title': chapter['title'],
@@ -192,14 +193,14 @@ class WebsiteBuilder:
                 prev_chapter = {
                     'number': chapters[i-1]['number'],
                     'title': chapters[i-1]['title'],
-                    'url': f"chapter-{chapters[i-1]['number']}.html"
+                    'url': f"/novels/{novel_data['slug']}/chapter-{chapters[i-1]['number']}"
                 }
                 
             if i < len(chapters) - 1:
                 next_chapter = {
                     'number': chapters[i+1]['number'],
                     'title': chapters[i+1]['title'],
-                    'url': f"chapter-{chapters[i+1]['number']}.html"
+                    'url': f"/novels/{novel_data['slug']}/chapter-{chapters[i+1]['number']}"
                 }
                 
             # 准备所有章节列表（用于目录）
@@ -208,7 +209,7 @@ class WebsiteBuilder:
                 all_chapters.append({
                     'number': ch['number'],
                     'title': ch['title'],
-                    'url': f"chapter-{ch['number']}.html"
+                    'url': f"/novels/{novel_data['slug']}/chapter-{ch['number']}"
                 })
                 
             # 渲染页面
