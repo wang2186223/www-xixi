@@ -717,7 +717,7 @@
             
             <!-- Read More Button -->
             <div class="read-more-container" style="text-align: center; margin: 30px 0;">
-                <button id="read-more-btn" class="read-more-button">
+                <button id="read-more-btn" class="read-more-button" style="display: inline-flex;">
                     <i class="fas fa-plus"></i> Read More
                 </button>
                 <div id="loading-indicator" style="display: none; color: #666; margin: 20px 0; font-size: 16px;">
@@ -1067,10 +1067,15 @@
             if (readMoreBtn) {
                 readMoreBtn.addEventListener('click', loadMoreRecommendedNovels);
                 
-                // 如果小说数量少于等于8本，隐藏按钮
-                if (allNovels.length <= 8) {
-                    readMoreBtn.style.display = 'none';
-                }
+                // 确保数据加载完成后再检查小说数量
+                setTimeout(() => {
+                    // 如果小说数量少于等于8本，隐藏按钮
+                    if (allNovels.length <= 8) {
+                        readMoreBtn.style.display = 'none';
+                    } else {
+                        readMoreBtn.style.display = 'inline-flex';
+                    }
+                }, 100);
             }
         }
 
