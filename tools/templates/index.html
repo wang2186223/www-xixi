@@ -729,18 +729,7 @@
 
     <!-- 隐藏的小说数据，供JavaScript使用 -->
     <script type="application/json" id="novels-data">
-        [
-        {% for novel in all_novels %}
-        {
-            "title": "{{ novel.title | replace('"', '\\"') }}",
-            "url": "{{ novel.url }}",
-            "cover_url": "{{ novel.cover_url }}",
-            "description": "{{ novel.description | replace('"', '\\"') }}",
-            "tags": [{% for tag in novel.tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
-            "last_updated": "{{ novel.last_updated }}"
-        }{% if not loop.last %},{% endif %}
-        {% endfor %}
-        ]
+        {{ all_novels | tojson | safe }}
     </script>
 
     <!-- Footer -->
