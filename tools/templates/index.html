@@ -291,6 +291,40 @@
             transform: translateY(-1px);
         }
 
+        /* Read More Button Styles */
+        .read-more-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .read-more-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(135deg, #ff5252, #8e7cc3);
+        }
+
+        .read-more-button:active {
+            transform: translateY(0);
+        }
+
+        .read-more-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         #load-more-btn:hover {
             background-color: #654321 !important;
         }
@@ -650,18 +684,44 @@
             </div>
         </section>
 
-        <!-- Random Recommendations Section -->
-        <section class="random">
+        <!-- Recommended For You Section -->
+        <section class="recommended">
             <div class="section-header">
                 <h2 class="section-title">Recommended For You</h2>
             </div>
             <div class="cards-grid" id="recommended-grid">
-                <!-- 初始8本小说通过JavaScript动态加载 -->
+                <!-- 默认展示8本小说 -->
+                {% for novel in recommended_novels %}
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="{{ novel.url }}">
+                            <img src="{{ novel.cover_url }}" alt="{{ novel.title }}" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="{{ novel.url }}" style="color: inherit; text-decoration: none;">{{ novel.title }}</a></h3>
+                        <p class="novel-desc">{{ novel.description }}</p>
+                        <div class="tags">
+                            {% for tag in novel.tags %}
+                            <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ novel.url }}" class="read-btn">Read Now</a>
+                            <div class="update-date">{{ novel.last_updated }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="load-more-container" style="text-align: center; margin: 30px 0;">
-                <button id="load-more-btn" style="display: none; padding: 12px 30px; background-color: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">Load More</button>
+            
+            <!-- Read More Button -->
+            <div class="read-more-container" style="text-align: center; margin: 30px 0;">
+                <button id="read-more-btn" class="read-more-button">
+                    <i class="fas fa-plus"></i> Read More
+                </button>
                 <div id="loading-indicator" style="display: none; color: #666; margin: 20px 0; font-size: 16px;">
-                    <span>🔄 Loading more novels...</span>
+                    <i class="fas fa-spinner fa-spin"></i> Loading more novels...
                 </div>
             </div>
         </section>
@@ -905,9 +965,9 @@
             }
         }
 
-        // Recommended For You 无限滚动加载
+        // Recommended For You - Read More 功能
         let allNovels = [];
-        let currentIndex = 0;
+        let currentIndex = 8; // 已经显示了初始的8本
         const batchSize = 8;
 
         function loadNovelsData() {
@@ -915,8 +975,10 @@
                 const dataElement = document.getElementById('novels-data');
                 if (dataElement) {
                     allNovels = JSON.parse(dataElement.textContent);
-                    // 随机打乱小说顺序
-                    shuffleArray(allNovels);
+                    // 随机打乱小说顺序，但保持前8本不变（已经在模板中显示）
+                    const remainingNovels = allNovels.slice(8);
+                    shuffleArray(remainingNovels);
+                    allNovels = [...allNovels.slice(0, 8), ...remainingNovels];
                 }
             } catch (error) {
                 console.error('Error loading novels data:', error);
@@ -953,47 +1015,62 @@
             `;
         }
 
-        function loadMoreNovels() {
+        function loadMoreRecommendedNovels() {
             const grid = document.getElementById('recommended-grid');
-            const loadMoreBtn = document.getElementById('load-more-btn');
+            const readMoreBtn = document.getElementById('read-more-btn');
             const loadingIndicator = document.getElementById('loading-indicator');
             
-            if (!grid || currentIndex >= allNovels.length) return;
+            if (!grid || currentIndex >= allNovels.length) {
+                // 没有更多小说了，隐藏按钮
+                if (readMoreBtn) {
+                    readMoreBtn.style.display = 'none';
+                }
+                return;
+            }
 
-            // 显示加载指示器
-            loadingIndicator.style.display = 'block';
-            loadMoreBtn.style.display = 'none';
+            // 显示加载指示器，隐藏按钮
+            if (loadingIndicator) loadingIndicator.style.display = 'block';
+            if (readMoreBtn) readMoreBtn.disabled = true;
 
             setTimeout(() => {
                 const endIndex = Math.min(currentIndex + batchSize, allNovels.length);
                 const batch = allNovels.slice(currentIndex, endIndex);
                 
                 batch.forEach(novel => {
-                    grid.innerHTML += createNovelCard(novel);
+                    grid.insertAdjacentHTML('beforeend', createNovelCard(novel));
                 });
                 
                 currentIndex = endIndex;
                 
                 // 隐藏加载指示器
-                loadingIndicator.style.display = 'none';
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
                 
-                // 如果还有更多小说，显示加载更多按钮
-                if (currentIndex < allNovels.length) {
-                    loadMoreBtn.style.display = 'inline-block';
+                // 更新按钮状态
+                if (readMoreBtn) {
+                    readMoreBtn.disabled = false;
+                    if (currentIndex >= allNovels.length) {
+                        readMoreBtn.textContent = 'No More Novels';
+                        readMoreBtn.disabled = true;
+                        setTimeout(() => {
+                            readMoreBtn.style.display = 'none';
+                        }, 2000);
+                    }
                 }
-            }, 500); // 模拟加载延迟
+            }, 800); // 模拟加载延迟
         }
 
         function initializeRecommendedSection() {
             loadNovelsData();
             
-            // 加载初始的8本小说
-            loadMoreNovels();
-            
-            // 绑定加载更多按钮事件
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener('click', loadMoreNovels);
+            // 绑定Read More按钮事件
+            const readMoreBtn = document.getElementById('read-more-btn');
+            if (readMoreBtn) {
+                readMoreBtn.addEventListener('click', loadMoreRecommendedNovels);
+                
+                // 如果小说数量少于等于8本，隐藏按钮
+                if (allNovels.length <= 8) {
+                    readMoreBtn.style.display = 'none';
+                }
             }
         }
 

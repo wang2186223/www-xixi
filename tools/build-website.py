@@ -261,7 +261,13 @@ class WebsiteBuilder:
         
         new_novels = self.prepare_novel_cards(novel_list[:12])      # 最新12本
         popular_novels = self.prepare_novel_cards(novel_list[:12])  # 热门12本（暂时用最新的）
-        recommended_novels = self.prepare_novel_cards(novel_list[:8]) # 推荐8本
+        
+        # 推荐小说：随机选择8本作为默认显示
+        recommended_count = min(8, len(novel_list))
+        if len(novel_list) > 0:
+            recommended_novels = self.prepare_novel_cards(random.sample(novel_list, recommended_count))
+        else:
+            recommended_novels = []
         
         # 准备分类数据
         categories = self.prepare_categories(novels)
