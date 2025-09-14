@@ -1818,6 +1818,30 @@
                 closeSidebarFunc();
             }
         });
+
+        // 记录阅读历史
+        document.addEventListener('DOMContentLoaded', function() {
+            const novelData = {
+                title: 'Beneath the CEO&#39;s Cold Embrace',
+                url: '/novels/beneath-the-ceos-cold-embrace/',
+                cover_url: '/covers/beneath-the-ceos-cold-embrace-wechat_2025-06-24_154128_605.png',
+                lastRead: new Date().toISOString(),
+                currentChapter: 43
+            };
+            
+            let history = JSON.parse(localStorage.getItem('readingHistory') || '[]');
+            
+            // 移除已存在的记录
+            history = history.filter(item => item.title !== novelData.title);
+            
+            // 添加到开头
+            history.unshift(novelData);
+            
+            // 只保留最近5条记录
+            history = history.slice(0, 5);
+            
+            localStorage.setItem('readingHistory', JSON.stringify(history));
+        });
     </script>
 </body>
 </html>

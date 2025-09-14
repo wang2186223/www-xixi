@@ -1126,6 +1126,30 @@
                 closeSidebarFunc();
             }
         });
+
+        // 记录阅读历史
+        document.addEventListener('DOMContentLoaded', function() {
+            const novelData = {
+                title: 'Alpha&#39;s Cursed Mate The Rogue Heir',
+                url: '/novels/alphas-cursed-mate-the-rogue-heir/',
+                cover_url: '/covers/alphas-cursed-mate-the-rogue-heir-wechat_2025-06-24_154444_761.png',
+                lastRead: new Date().toISOString(),
+                currentChapter: 56
+            };
+            
+            let history = JSON.parse(localStorage.getItem('readingHistory') || '[]');
+            
+            // 移除已存在的记录
+            history = history.filter(item => item.title !== novelData.title);
+            
+            // 添加到开头
+            history.unshift(novelData);
+            
+            // 只保留最近5条记录
+            history = history.slice(0, 5);
+            
+            localStorage.setItem('readingHistory', JSON.stringify(history));
+        });
     </script>
 </body>
 </html>

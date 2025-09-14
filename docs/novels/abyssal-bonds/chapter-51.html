@@ -1394,6 +1394,30 @@
                 closeSidebarFunc();
             }
         });
+
+        // 记录阅读历史
+        document.addEventListener('DOMContentLoaded', function() {
+            const novelData = {
+                title: 'Abyssal Bonds',
+                url: '/novels/abyssal-bonds/',
+                cover_url: '/covers/abyssal-bonds-wechat_2025-06-23_183959_873.png',
+                lastRead: new Date().toISOString(),
+                currentChapter: 51
+            };
+            
+            let history = JSON.parse(localStorage.getItem('readingHistory') || '[]');
+            
+            // 移除已存在的记录
+            history = history.filter(item => item.title !== novelData.title);
+            
+            // 添加到开头
+            history.unshift(novelData);
+            
+            // 只保留最近5条记录
+            history = history.slice(0, 5);
+            
+            localStorage.setItem('readingHistory', JSON.stringify(history));
+        });
     </script>
 </body>
 </html>
