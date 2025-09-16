@@ -436,10 +436,25 @@ def main():
     parser.add_argument('--templates', default='tools/templates', help='模板目录')
     parser.add_argument('--force', action='store_true', help='强制重建所有页面')
     parser.add_argument('--novel', help='只构建指定的小说（标题包含此字符串）')
-    parser.add_argument('--site-url', default='https://example.github.io', help='网站URL')
+    parser.add_argument('--site-url', help='网站URL (覆盖配置文件)')
     parser.add_argument('--incremental', action='store_true', help='增量构建（只构建有变化的内容）')
     
     args = parser.parse_args()
+    
+    # 读取配置文件
+    site_url = 'https://my.newreadnovel.com'  # 默认正确域名
+    config_file = 'config.json'
+    if os.path.exists(config_file):
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                json_config = json.load(f)
+                site_url = json_config.get('site', {}).get('url', site_url)
+        except Exception as e:
+            print(f"警告: 无法读取配置文件 {config_file}: {e}")
+    
+    # 命令行参数覆盖配置文件
+    if args.site_url:
+        site_url = args.site_url
     
     # 配置
     config = {
@@ -447,7 +462,7 @@ def main():
         'source_path': args.source,
         'output_path': args.output,
         'templates_path': args.templates,
-        'site_url': args.site_url
+        'site_url': site_url
     }
     
     # 构建网站
