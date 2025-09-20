@@ -403,7 +403,27 @@ class WebsiteBuilder:
         loc.text = f"{self.site_url}/{path}"
         
         lastmod = ET.SubElement(url_elem, 'lastmod')
-        lastmod.text = datetime.now().strftime('%Y-%m-%d')
+        
+        # 根据实际文件的创建时间设置lastmod
+        if path == '':
+            # 首页使用index.html的时间
+            file_path = self.output_path / 'index.html'
+        else:
+            # 其他页面使用对应的文件路径
+            file_path = self.output_path / path
+        
+        if file_path.exists():
+            # 使用文件的创建时间
+            stat_result = file_path.stat()
+            # 在macOS上使用st_birthtime获取创建时间，在其他系统上回退到st_ctime
+            if hasattr(stat_result, 'st_birthtime'):
+                ctime = stat_result.st_birthtime
+            else:
+                ctime = stat_result.st_ctime
+            lastmod.text = datetime.fromtimestamp(ctime).strftime('%Y-%m-%d')
+        else:
+            # 如果文件不存在，使用当前时间
+            lastmod.text = datetime.now().strftime('%Y-%m-%d')
         
         changefreq_elem = ET.SubElement(url_elem, 'changefreq')
         changefreq_elem.text = changefreq
