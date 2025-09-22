@@ -48,6 +48,66 @@ class WebsiteBuilder:
         
         self.site_url = config.get('site_url', 'https://example.github.io')
         
+    def get_file_timestamps(self, file_path: Path) -> Dict[str, str]:
+        """获取文件的创建时间和修改时间"""
+        try:
+            stat = file_path.stat()
+            
+            # 创建时间（在Windows上是st_ctime，在Unix/Linux上通常也是st_ctime）
+            created_time = datetime.fromtimestamp(stat.st_ctime)
+            # 修改时间
+            modified_time = datetime.fromtimestamp(stat.st_mtime)
+            
+            # 格式化为ISO 8601格式（SEO友好）
+            return {
+                'created_iso': created_time.isoformat(),
+                'modified_iso': modified_time.isoformat(),
+                'created_readable': created_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'modified_readable': modified_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'created_date': created_time.strftime('%Y-%m-%d'),
+                'modified_date': modified_time.strftime('%Y-%m-%d')
+            }
+        except Exception as e:
+            # 如果无法获取文件时间，使用当前时间
+            current_time = datetime.now()
+            return {
+                'created_iso': current_time.isoformat(),
+                'modified_iso': current_time.isoformat(),
+                'created_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'modified_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'created_date': current_time.strftime('%Y-%m-%d'),
+                'modified_date': current_time.strftime('%Y-%m-%d')
+            }
+    
+    def get_novel_timestamps(self, novel_data: Dict) -> Dict[str, str]:
+        """获取小说相关的时间戳"""
+        # 尝试从小说的源文件获取时间
+        novel_slug = novel_data.get('slug', '')
+        source_novel_path = self.source_path / novel_slug
+        
+        # 查找主要文本文件
+        main_file = None
+        if source_novel_path.exists():
+            for possible_file in ['书籍正文.txt', '正文.txt', 'content.txt']:
+                potential_path = source_novel_path / possible_file
+                if potential_path.exists():
+                    main_file = potential_path
+                    break
+        
+        if main_file and main_file.exists():
+            return self.get_file_timestamps(main_file)
+        else:
+            # 如果找不到源文件，使用当前时间
+            current_time = datetime.now()
+            return {
+                'created_iso': current_time.isoformat(),
+                'modified_iso': current_time.isoformat(),
+                'created_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'modified_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'created_date': current_time.strftime('%Y-%m-%d'),
+                'modified_date': current_time.strftime('%Y-%m-%d')
+            }
+        
     def build_website(self, force_rebuild: bool = False, novel_filter: Optional[str] = None):
         """构建完整网站"""
         print("开始构建网站...")
@@ -155,6 +215,9 @@ class WebsiteBuilder:
         # 处理封面URL
         cover_url = self.get_cover_url(novel_data)
         
+        # 获取时间戳信息
+        timestamps = self.get_novel_timestamps(novel_data)
+        
         # 渲染页面
         html_content = template.render(
             novel={
@@ -171,6 +234,7 @@ class WebsiteBuilder:
                 'chapters': chapters,
                 'url': f"/novels/{novel_data['slug']}/"
             },
+            timestamps=timestamps,
             canonical_url=f"{self.site_url}/novels/{novel_data['slug']}/",
             site_url=self.site_url
         )
@@ -212,6 +276,9 @@ class WebsiteBuilder:
                     'title': ch['title'],
                     'url': f"/novels/{novel_data['slug']}/chapter-{ch['number']}"
                 })
+            
+            # 获取时间戳信息
+            timestamps = self.get_novel_timestamps(novel_data)
                 
             # 渲染页面
             html_content = template.render(
@@ -230,6 +297,7 @@ class WebsiteBuilder:
                     'chapters': all_chapters,
                     'tags': novel_data['tags']
                 },
+                timestamps=timestamps,
                 prev_chapter=prev_chapter,
                 next_chapter=next_chapter,
                 canonical_url=f"{self.site_url}/novels/{novel_data['slug']}/chapter-{chapter['number']}.html",
@@ -275,6 +343,17 @@ class WebsiteBuilder:
         # 准备所有小说数据用于推荐区域
         all_novels = self.prepare_novel_cards(novel_list)
         
+        # 获取网站时间戳（使用当前时间）
+        current_time = datetime.now()
+        site_timestamps = {
+            'created_iso': current_time.isoformat(),
+            'modified_iso': current_time.isoformat(),
+            'created_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'modified_readable': current_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'created_date': current_time.strftime('%Y-%m-%d'),
+            'modified_date': current_time.strftime('%Y-%m-%d')
+        }
+        
         # 渲染首页
         html_content = template.render(
             featured_novels=featured_novels,
@@ -283,6 +362,7 @@ class WebsiteBuilder:
             recommended_novels=recommended_novels,
             all_novels=all_novels,
             categories=categories,
+            timestamps=site_timestamps,
             canonical_url=f"{self.site_url}/",
             site_url=self.site_url
         )

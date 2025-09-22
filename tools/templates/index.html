@@ -7,6 +7,14 @@
     <meta name="description" content="{% if page_description %}{{ page_description }}{% else %}Discover thousands of free werewolf romance novels. Read passionate alpha stories, mate bonds, and pack adventures. Perfect for women who love paranormal romance.{% endif %}">
     <meta name="keywords" content="free werewolf novels, alpha romance, mate bond stories, paranormal romance, werewolf fiction, free books for women">
     
+    <!-- Time Meta Tags for SEO -->
+    {% if timestamps %}
+    <meta property="article:published_time" content="{{ timestamps.created_iso }}">
+    <meta property="article:modified_time" content="{{ timestamps.modified_iso }}">
+    <meta name="date" content="{{ timestamps.modified_date }}">
+    <meta name="last-modified" content="{{ timestamps.modified_readable }}">
+    {% endif %}
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{% if page_title %}{{ page_title }}{% else %}NovelVibe - Free Novels for Women{% endif %}">
     <meta property="og:description" content="{% if page_description %}{{ page_description }}{% else %}Discover thousands of free werewolf romance novels{% endif %}">

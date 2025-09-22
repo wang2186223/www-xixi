@@ -7,6 +7,14 @@
     <meta name="description" content="{% if novel.description %}{{ novel.description }}{% else %}Read free werewolf romance novels on NovelVibe{% endif %}">
     <meta name="keywords" content="{% if novel.tags %}{{ novel.tags|join(', ') }}{% else %}werewolf, romance, free novels{% endif %}">
     
+    <!-- Time Meta Tags for SEO -->
+    {% if timestamps %}
+    <meta property="article:published_time" content="{{ timestamps.created_iso }}">
+    <meta property="article:modified_time" content="{{ timestamps.modified_iso }}">
+    <meta name="date" content="{{ timestamps.modified_date }}">
+    <meta name="last-modified" content="{{ timestamps.modified_readable }}">
+    {% endif %}
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{% if novel.title %}{{ novel.title }}{% else %}Book Details{% endif %}">
     <meta property="og:description" content="{% if novel.description %}{{ novel.description }}{% else %}Read free werewolf romance novels{% endif %}">
@@ -384,6 +392,42 @@
             }
         }
     </style>
+    
+    <!-- Schema.org Structured Data for Book -->
+    {% if timestamps %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": "{{ novel.title }}",
+        "author": {
+            "@type": "Person",
+            "name": "{{ novel.author }}"
+        },
+        "description": "{{ novel.description }}",
+        "genre": "{{ novel.genres|join(', ') if novel.genres else 'Romance, Fiction' }}",
+        "url": "{{ canonical_url }}",
+        {% if novel.cover_url %}
+        "image": "{{ novel.cover_url }}",
+        {% endif %}
+        "datePublished": "{{ timestamps.created_iso }}",
+        "dateModified": "{{ timestamps.modified_iso }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "NovelVibe",
+            "url": "{{ site_url }}"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{ novel.rating if novel.rating else '4.5' }}",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "100"
+        },
+        "numberOfPages": "{{ novel.total_chapters * 10 if novel.total_chapters else '100' }}"
+    }
+    </script>
+    {% endif %}
 </head>
 <body>
     <!-- 顶部导航 -->

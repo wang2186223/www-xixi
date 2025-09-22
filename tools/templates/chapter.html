@@ -7,6 +7,14 @@
     <meta name="description" content="{% if chapter.summary %}{{ chapter.summary }}{% else %}Read {{ novel.title }} Chapter {{ chapter.number }} on NovelVibe - Free werewolf romance novels{% endif %}">
     <meta name="keywords" content="{% if novel.tags %}{{ novel.tags|join(', ') }}{% else %}werewolf, romance, free novels, online reading{% endif %}">
     
+    <!-- Time Meta Tags for SEO -->
+    {% if timestamps %}
+    <meta property="article:published_time" content="{{ timestamps.created_iso }}">
+    <meta property="article:modified_time" content="{{ timestamps.modified_iso }}">
+    <meta name="date" content="{{ timestamps.modified_date }}">
+    <meta name="last-modified" content="{{ timestamps.modified_readable }}">
+    {% endif %}
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{% if chapter.title %}{{ chapter.title }}{% else %}Chapter {{ chapter.number }}{% endif %}">
     <meta property="og:description" content="{% if chapter.summary %}{{ chapter.summary }}{% else %}Read {{ novel.title }} online for free{% endif %}">
@@ -339,6 +347,54 @@
             }
         }
     </style>
+    
+    <!-- Schema.org Structured Data for Article -->
+    {% if timestamps %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "{{ chapter.title }} - {{ novel.title }}",
+        "alternativeHeadline": "Chapter {{ chapter.number }}: {{ chapter.title }}",
+        "author": {
+            "@type": "Person",
+            "name": "{{ novel.author }}"
+        },
+        "datePublished": "{{ timestamps.created_iso }}",
+        "dateModified": "{{ timestamps.modified_iso }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "NovelVibe",
+            "url": "{{ site_url }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ site_url }}/assets/images/logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "{{ canonical_url }}"
+        },
+        "url": "{{ canonical_url }}",
+        {% if novel.cover_url %}
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{ novel.cover_url }}"
+        },
+        {% endif %}
+        "articleSection": "Chapter",
+        "wordCount": "{{ chapter.word_count if chapter.word_count else '2000' }}",
+        "isPartOf": {
+            "@type": "Book",
+            "name": "{{ novel.title }}",
+            "author": {
+                "@type": "Person",
+                "name": "{{ novel.author }}"
+            }
+        }
+    }
+    </script>
+    {% endif %}
 </head>
 <body>
     <header>
