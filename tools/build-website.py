@@ -369,22 +369,23 @@ class WebsiteBuilder:
                             print(f"复制封面失败 {novel_data['title']}: {e}")
                             
     def generate_sitemap(self, novels: Dict):
-        """生成站点地图"""
+        """生成站点地图 - 优化版本：每本小说只包含详情页和前10个章节"""
         urlset = ET.Element('urlset')
         urlset.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
         
         # 添加首页
         self.add_url_to_sitemap(urlset, '', priority='1.0', changefreq='daily')
         
-        # 添加小说详情页和章节页
+        # 添加小说详情页和前10个章节页
         for novel_data in novels.values():
             novel_url = f"novels/{novel_data['slug']}/"
             
             # 小说详情页
             self.add_url_to_sitemap(urlset, novel_url, priority='0.8', changefreq='weekly')
             
-            # 章节页面
-            for chapter in novel_data['chapters']:
+            # 只添加前10个章节到sitemap中，减少文件大小
+            chapters_to_include = novel_data['chapters'][:10]  # 只取前10个章节
+            for chapter in chapters_to_include:
                 chapter_url = f"novels/{novel_data['slug']}/chapter-{chapter['number']}.html"
                 self.add_url_to_sitemap(urlset, chapter_url, priority='0.6', changefreq='monthly')
                 
