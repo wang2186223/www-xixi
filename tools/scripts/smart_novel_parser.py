@@ -426,19 +426,65 @@ class SmartNovelLibraryManager:
         return {}
         
     def save_cache(self, novels: Dict) -> None:
-        """保存缓存数据"""
+        """保存缓存数据（章节内容限制为前100个字符）"""
         try:
+            # 创建缓存数据，限制章节内容长度
+            cache_data = {}
+            for novel_id, novel_data in novels.items():
+                cache_data[novel_id] = novel_data.copy()
+                
+                # 如果有章节数据，截取content为前100个字符
+                if 'chapters' in cache_data[novel_id]:
+                    cache_data[novel_id]['chapters'] = []
+                    for chapter in novel_data.get('chapters', []):
+                        cached_chapter = chapter.copy()
+                        # 截取content为前100个字符
+                        if 'content' in cached_chapter and cached_chapter['content']:
+                            cached_chapter['content'] = cached_chapter['content'][:100]
+                        cache_data[novel_id]['chapters'].append(cached_chapter)
+            
             with open(self.cache_file, 'w', encoding='utf-8') as f:
-                json.dump(novels, f, ensure_ascii=False, indent=2)
+                json.dump(cache_data, f, ensure_ascii=False, indent=2)
+            print(f"💾 保存缓存文件（content限制100字符）: {self.cache_file}")
         except Exception as e:
             print(f"❌ 保存缓存失败: {e}")
             
     def save_index(self, novels: Dict) -> None:
-        """保存小说索引"""
+        """保存小说索引（仅元数据）"""
         try:
+            # 创建只包含元数据的索引
+            index_data = {}
+            for novel_id, novel_data in novels.items():
+                # 只保留元数据，不包含章节内容
+                index_data[novel_id] = {
+                    'id': novel_data.get('id'),
+                    'slug': novel_data.get('slug'),
+                    'title': novel_data.get('title'),
+                    'author': novel_data.get('author'),
+                    'description': novel_data.get('description'),
+                    'short_description': novel_data.get('short_description'),
+                    'genres': novel_data.get('genres', []),
+                    'tags': novel_data.get('tags', []),
+                    'status': novel_data.get('status'),
+                    'rating': novel_data.get('rating'),
+                    'cover_path': novel_data.get('cover_path'),
+                    'total_chapters': novel_data.get('total_chapters', 0),
+                    'last_updated': novel_data.get('last_updated'),
+                    # 章节列表只保留元数据，不包含content
+                    'chapters': [
+                        {
+                            'number': ch.get('number'),
+                            'title': ch.get('title'),
+                            'word_count': ch.get('word_count', 0),
+                            'publish_date': ch.get('publish_date')
+                        }
+                        for ch in novel_data.get('chapters', [])
+                    ]
+                }
+            
             with open(self.index_file, 'w', encoding='utf-8') as f:
-                json.dump(novels, f, ensure_ascii=False, indent=2)
-            print(f"💾 保存索引文件: {self.index_file}")
+                json.dump(index_data, f, ensure_ascii=False, indent=2)
+            print(f"💾 保存索引文件（仅元数据）: {self.index_file}")
         except Exception as e:
             print(f"❌ 保存索引失败: {e}")
             
