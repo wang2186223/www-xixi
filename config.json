@@ -2,7 +2,7 @@
   "site": {
     "name": "NovelVibe",
     "description": "Free Werewolf Novels for American Women",
-    "url": "https://my.newreadnovel.com",
+    "url": "https://www.xixifreenovel.com",
     "language": "en-US",
     "author": "NovelVibe Team"
   },
@@ -19,8 +19,8 @@
     "title_template": "{title} - {author} | NovelVibe Free Novels"
   },
   "analytics": {
-    "google_analytics_id": "G-XXXXXXXXXX",
-    "google_adsense_id": "ca-pub-XXXXXXXXXXXXXXXX"
+    "google_analytics_id": "G-EWY8W7MKKM",
+    "google_adsense_id": "ca-pub-6892179169063217"
   },
   "novels": {
     "max_description_length": 500,
