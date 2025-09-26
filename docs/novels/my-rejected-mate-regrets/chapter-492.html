@@ -216,26 +216,67 @@
             padding: 30px 0;
         }
 
+        .chapter-header {
+            margin-bottom: 30px;
+        }
+
         .chapter-title {
             font-size: 24px;
             margin-bottom: 20px;
             font-weight: 600;
         }
 
-        .content {
-            font-size: 18px;
-            text-align: justify;
+        .chapter-content {
+            margin-bottom: 40px;
         }
 
-        .content p {
+        .story-text {
+            font-size: 18px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        .story-text p {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+
+        .reading-controls {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
             margin-bottom: 20px;
         }
 
         .font-controls {
             display: flex;
             gap: 10px;
-            margin-top: 30px;
             justify-content: center;
+        }
+
+        .chapter-navigation {
+            background-color: var(--secondary-bg);
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            text-decoration: none;
         }
 
         .font-btn {
@@ -397,14 +438,26 @@
         }
     </style>
     
-    <!-- Schema.org Structured Data for Article -->
+    <!-- Enhanced Schema.org Structured Data for Novel Chapter -->
     
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Chapter 0494 - My Rejected Mate Regrets",
-        "alternativeHeadline": "Chapter 492: Chapter 0494",
+        "@type": "Chapter",
+        "name": "Chapter 0494",
+        "position": 492,
+        "isPartOf": {
+            "@type": "Book",
+            "name": "My Rejected Mate Regrets",
+            "author": {
+                "@type": "Person",
+                "name": "Unknown Author"
+            },
+            "genre": ["Romance", "Fantasy", "Werewolf Fiction"],
+            "bookFormat": "EBook",
+            "inLanguage": "en"
+        },
+        "text": "Chapter content featuring dialogue between characters about pack dynamics and relationships...",
         "author": {
             "@type": "Person",
             "name": "Unknown Author"
@@ -414,39 +467,28 @@
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
-            "url": "https://www.xixifreenovel.com",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.xixifreenovel.com/assets/images/logo.png"
-            }
-        },
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.xixifreenovel.com/novels/my-rejected-mate-regrets/chapter-492.html"
+            "url": "https://www.xixifreenovel.com"
         },
         "url": "https://www.xixifreenovel.com/novels/my-rejected-mate-regrets/chapter-492.html",
-        
-        "image": {
-            "@type": "ImageObject",
-            "url": "/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png"
-        },
-        
-        "articleSection": "Chapter",
-        "wordCount": "566",
-        "isPartOf": {
-            "@type": "Book",
-            "name": "My Rejected Mate Regrets",
-            "author": {
+        "genre": ["Romance", "Fantasy", "Werewolf Fiction"],
+        "inLanguage": "en",
+        "wordCount": 5666,
+        "isAccessibleForFree": true,
+        "about": "A chapter from the werewolf romance novel featuring character development and dialogue",
+        "keywords": "romance, werewolf, fantasy, chapter, novel"
                 "@type": "Person",
-                "name": "Unknown Author"
-            }
-        }
+        "keywords": "romance, werewolf, fantasy, chapter, novel"
     }
     </script>
     
+    <!-- Additional meta for content identification -->
+    <meta name="content-type" content="novel-chapter">
+    <meta name="reading-time" content="3-5 minutes">
+    <meta name="content-category" content="fiction">
+    
 </head>
-<body>
-    <header>
+<body itemscope itemtype="https://schema.org/WebPage">
+    <header role="banner">
         <div class="container">
             <div class="header-content">
                 <div class="left-header">
@@ -467,10 +509,16 @@
         </div>
     </header>
 
-    <main>
+    <main role="main" itemscope itemtype="https://schema.org/Chapter">
         <div class="container">
-            <h1 class="chapter-title">Chapter 0494</h1>
-            <div class="content font-medium">
+            <header class="chapter-header">
+                <h1 class="chapter-title" itemprop="name">Chapter 0494</h1>
+                <meta itemprop="position" content="492">
+                <meta itemprop="isPartOf" content="My Rejected Mate Regrets">
+            </header>
+            
+            <article class="chapter-content" itemprop="text" role="article" data-content-type="novel-chapter">
+                <div class="story-text font-medium" id="main-content" data-ad-client="ca-pub-6892179169063217">
                 
                 
                 <p>&#34;I need you to understand how deeply Theron regrets his actions.&#34; His voice carried the weight of authority. &#34;I never intended to issue an Alpha command to keep him away from you, but since he refused to listen, I had no choice. If he ever approaches you again, I expect you to inform me immediately, Ivy.&#34;</p>
@@ -576,31 +624,40 @@
                 <p>I clung to her. &#34;This. Just this.&#34;</p>
                 
                 
-            </div>
+                </div>
+            </article>
             
-            <div class="font-controls">
-                <button class="font-btn" id="small-font">A</button>
-                <button class="font-btn active" id="medium-font">A</button>
-                <button class="font-btn" id="large-font">A</button>
-            </div>
+            <aside class="reading-controls" role="complementary">
+                <div class="font-controls">
+                    <button class="font-btn" id="small-font" aria-label="Small font">A</button>
+                    <button class="font-btn active" id="medium-font" aria-label="Medium font">A</button>
+                    <button class="font-btn" id="large-font" aria-label="Large font">A</button>
+                </div>
+            </aside>
         </div>
     </main>
 
-    <footer>
+    <nav class="chapter-navigation" role="navigation" aria-label="Chapter Navigation">
         <div class="container">
-            <div class="footer-content">
+            <div class="nav-content">
                 
-                <a href="/novels/my-rejected-mate-regrets/chapter-491" class="nav-btn" id="prev-chapter">
-                    <i class="fas fa-arrow-left"></i> Previous
+                <a href="/novels/my-rejected-mate-regrets/chapter-491" class="nav-btn prev-btn" rel="prev">
+                    <i class="fas fa-arrow-left"></i> Previous Chapter
                 </a>
                 
                 
                 
-                <a href="/novels/my-rejected-mate-regrets/chapter-493" class="nav-btn" id="next-chapter">
-                    Next <i class="fas fa-arrow-right"></i>
+                <a href="/novels/my-rejected-mate-regrets/chapter-493" class="nav-btn next-btn" rel="next">
+                    Next Chapter <i class="fas fa-arrow-right"></i>
                 </a>
                 
             </div>
+        </div>
+    </nav>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p class="copyright">&copy; 2025 NovelVibe. All rights reserved.</p>
         </div>
     </footer>
 
