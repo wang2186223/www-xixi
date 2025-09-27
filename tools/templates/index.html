@@ -74,6 +74,9 @@
     // Track PageView with 24-hour prevention
     if (shouldTrackEvent('PageView_Index')) {
         fbq('track', 'PageView');
+        console.log('Facebook事件已发送: PageView (索引页浏览)');
+    } else {
+        console.log('Facebook事件已跳过: PageView_Index (今日已发送)');
     }
     </script>
     <noscript><img height="1" width="1" style="display:none"
