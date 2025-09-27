@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-09-27T10:00:48.797985">
-    <meta property="article:modified_time" content="2025-09-27T10:00:48.797985">
+    <meta property="article:published_time" content="2025-09-27T16:03:03.256609">
+    <meta property="article:modified_time" content="2025-09-27T16:03:03.256609">
     <meta name="date" content="2025-09-27">
-    <meta name="last-modified" content="2025-09-27 10:00:48">
+    <meta name="last-modified" content="2025-09-27 16:03:03">
     
     
     <!-- Open Graph Meta Tags -->
@@ -55,7 +55,26 @@
     'https://connect.facebook.net/en_US/fbevents.js');
 
     fbq('init', '3902941096613787');
-    fbq('track', 'PageView');
+    
+    // Natural 24-hour event tracking prevention (resets at midnight)
+    function shouldTrackEvent(eventName) {
+        const now = new Date();
+        const today = now.toDateString(); // Gets date string like "Fri Sep 27 2025"
+        const storageKey = `fb_event_${eventName}`;
+        const lastTrackedDate = localStorage.getItem(storageKey);
+        
+        if (!lastTrackedDate || lastTrackedDate !== today) {
+            localStorage.setItem(storageKey, today);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Track PageView with 24-hour prevention
+    if (shouldTrackEvent('PageView')) {
+        fbq('track', 'PageView');
+    }
     
     // Reading time tracking for Facebook Pixel
     let readingStartTime = Date.now();
@@ -67,12 +86,16 @@
         const readingTime = (currentTime - readingStartTime) / 1000 / 60; // in minutes
         
         if (!oneMinuteSent && readingTime >= 1) {
-            fbq('track', 'CustomEvent', {event_name: '1m_web'});
+            if (shouldTrackEvent('1m_web')) {
+                fbq('track', 'CustomEvent', {event_name: '1m_web'});
+            }
             oneMinuteSent = true;
         }
         
         if (!tenMinutesSent && readingTime >= 10) {
-            fbq('track', 'CustomEvent', {event_name: '10m_web'});
+            if (shouldTrackEvent('10m_web')) {
+                fbq('track', 'CustomEvent', {event_name: '10m_web'});
+            }
             tenMinutesSent = true;
         }
     }
@@ -409,8 +432,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2025-09-27T10:00:48.797985",
-        "dateModified": "2025-09-27T10:00:48.797985",
+        "datePublished": "2025-09-27T16:03:03.256609",
+        "dateModified": "2025-09-27T16:03:03.256609",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",

@@ -55,7 +55,26 @@
     'https://connect.facebook.net/en_US/fbevents.js');
 
     fbq('init', '3902941096613787');
-    fbq('track', 'PageView');
+    
+    // Natural 24-hour event tracking prevention (resets at midnight)
+    function shouldTrackEvent(eventName) {
+        const now = new Date();
+        const today = now.toDateString(); // Gets date string like "Fri Sep 27 2025"
+        const storageKey = `fb_event_${eventName}`;
+        const lastTrackedDate = localStorage.getItem(storageKey);
+        
+        if (!lastTrackedDate || lastTrackedDate !== today) {
+            localStorage.setItem(storageKey, today);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Track PageView with 24-hour prevention
+    if (shouldTrackEvent('PageView_Novel')) {
+        fbq('track', 'PageView');
+    }
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=3902941096613787&ev=PageView&noscript=1"
