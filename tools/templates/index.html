@@ -56,27 +56,28 @@
 
     fbq('init', '3902941096613787');
     
-    // Natural 24-hour event tracking prevention (resets at midnight)
+    // Natural 72-hour event tracking prevention (resets every 3 days)
     function shouldTrackEvent(eventName) {
         const now = new Date();
-        const today = now.toDateString(); // Gets date string like "Fri Sep 27 2025"
+        const threeDaysAgo = new Date(now.getTime() - (3 * 24 * 60 * 60 * 1000));
+        const currentPeriod = Math.floor(now.getTime() / (3 * 24 * 60 * 60 * 1000));
         const storageKey = `fb_event_${eventName}`;
-        const lastTrackedDate = localStorage.getItem(storageKey);
+        const lastTrackedPeriod = localStorage.getItem(storageKey);
         
-        if (!lastTrackedDate || lastTrackedDate !== today) {
-            localStorage.setItem(storageKey, today);
+        if (!lastTrackedPeriod || parseInt(lastTrackedPeriod) !== currentPeriod) {
+            localStorage.setItem(storageKey, currentPeriod.toString());
             return true;
         }
         
         return false;
     }
     
-    // Track PageView with 24-hour prevention
+    // Track PageView with 72-hour prevention
     if (shouldTrackEvent('PageView_Index')) {
         fbq('track', 'PageView');
         console.log('Facebook事件已发送: PageView (索引页浏览)');
     } else {
-        console.log('Facebook事件已跳过: PageView_Index (今日已发送)');
+        console.log('Facebook事件已跳过: PageView_Index (本72小时内已发送)');
     }
     </script>
     <noscript><img height="1" width="1" style="display:none"
