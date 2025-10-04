@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-10-04T16:47:12.938101">
-    <meta property="article:modified_time" content="2025-10-04T16:47:12.938101">
+    <meta property="article:published_time" content="2025-10-04T16:57:37.007995">
+    <meta property="article:modified_time" content="2025-10-04T16:57:37.007995">
     <meta name="date" content="2025-10-04">
-    <meta name="last-modified" content="2025-10-04 16:47:12">
+    <meta name="last-modified" content="2025-10-04 16:57:37">
     
     
     <!-- Open Graph Meta Tags -->
@@ -442,8 +442,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2025-10-04T16:47:12.938101",
-        "dateModified": "2025-10-04T16:47:12.938101",
+        "datePublished": "2025-10-04T16:57:37.007995",
+        "dateModified": "2025-10-04T16:57:37.007995",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
@@ -3471,7 +3471,12 @@
                     } else {
                         if (pageHiddenTime) {
                             const hiddenDuration = Date.now() - pageHiddenTime;
-                            if (hiddenDuration > 10000 && this.isGuideActive) { // 10秒
+                            
+                            if (hiddenDuration <= 10000) {
+                                // 离开时间小于10秒，显示提示弹窗
+                                this.showShortLeaveNotification();
+                            } else if (hiddenDuration > 10000 && this.isGuideActive) {
+                                // 离开时间超过10秒且引导激活中，关闭引导
                                 console.log('广告引导：用户离开页面超过10秒，自动关闭引导');
                                 this.endGuide();
                             }
@@ -3479,6 +3484,79 @@
                         pageHiddenTime = null;
                     }
                 });
+            }
+
+            // 显示短暂离开提示弹窗
+            showShortLeaveNotification() {
+                // 避免重复弹窗
+                if (document.getElementById('short-leave-notification')) {
+                    return;
+                }
+
+                const notification = document.createElement('div');
+                notification.id = 'short-leave-notification';
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 12px;
+                    font-size: 18px;
+                    font-weight: 500;
+                    z-index: 50000;
+                    text-align: center;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                    animation: fadeInScale 0.3s ease-out;
+                `;
+                notification.textContent = 'Less than 10 seconds';
+
+                // 添加动画样式
+                if (!document.getElementById('notification-animation-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-animation-styles';
+                    style.textContent = `
+                        @keyframes fadeInScale {
+                            0% {
+                                opacity: 0;
+                                transform: translate(-50%, -50%) scale(0.8);
+                            }
+                            100% {
+                                opacity: 1;
+                                transform: translate(-50%, -50%) scale(1);
+                            }
+                        }
+                        @keyframes fadeOutScale {
+                            0% {
+                                opacity: 1;
+                                transform: translate(-50%, -50%) scale(1);
+                            }
+                            100% {
+                                opacity: 0;
+                                transform: translate(-50%, -50%) scale(0.8);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                document.body.appendChild(notification);
+
+                // 2秒后自动关闭
+                setTimeout(() => {
+                    if (notification && notification.parentNode) {
+                        notification.style.animation = 'fadeOutScale 0.3s ease-out';
+                        setTimeout(() => {
+                            if (notification && notification.parentNode) {
+                                notification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 2000);
+
+                console.log('显示短暂离开提示：Less than 10 seconds');
             }
 
             // 关键点5：调试模式实现
