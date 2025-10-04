@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-10-04T17:12:39.721351">
-    <meta property="article:modified_time" content="2025-10-04T17:12:39.721351">
+    <meta property="article:published_time" content="2025-10-04T17:17:14.197634">
+    <meta property="article:modified_time" content="2025-10-04T17:17:14.197634">
     <meta name="date" content="2025-10-04">
-    <meta name="last-modified" content="2025-10-04 17:12:39">
+    <meta name="last-modified" content="2025-10-04 17:17:14">
     
     
     <!-- Open Graph Meta Tags -->
@@ -442,8 +442,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2025-10-04T17:12:39.721351",
-        "dateModified": "2025-10-04T17:12:39.721351",
+        "datePublished": "2025-10-04T17:17:14.197634",
+        "dateModified": "2025-10-04T17:17:14.197634",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
@@ -3290,10 +3290,16 @@
                             if (hiddenDuration <= 10000) {
                                 // 离开时间小于10秒，显示提示弹窗
                                 this.showShortLeaveNotification();
-                            } else if (hiddenDuration > 10000 && this.isGuideActive) {
-                                // 离开时间超过10秒且引导激活中，关闭引导
-                                console.log('广告引导：用户离开页面超过10秒，自动关闭引导');
-                                this.endGuide();
+                            } else if (hiddenDuration > 10000) {
+                                if (this.isGuideActive) {
+                                    // 引导激活中且离开超过10秒，关闭引导并显示感谢弹窗
+                                    console.log('广告引导：用户离开页面超过10秒，自动关闭引导');
+                                    this.endGuide();
+                                    this.showThankYouNotification();
+                                } else {
+                                    // 引导未激活但之前可能有过引导，仍显示感谢弹窗
+                                    this.showThankYouNotification();
+                                }
                             }
                         }
                         pageHiddenTime = null;
@@ -3372,6 +3378,80 @@
                 }, 2000);
 
                 console.log('显示短暂离开提示：Less than 10 seconds');
+            }
+
+            // 显示感谢广告浏览弹窗
+            showThankYouNotification() {
+                // 避免重复弹窗
+                if (document.getElementById('thank-you-notification')) {
+                    return;
+                }
+
+                const notification = document.createElement('div');
+                notification.id = 'thank-you-notification';
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #007AFF, #5AC8FA);
+                    color: white;
+                    padding: 25px 35px;
+                    border-radius: 16px;
+                    font-size: 20px;
+                    font-weight: 600;
+                    z-index: 50000;
+                    text-align: center;
+                    box-shadow: 0 12px 40px rgba(0, 122, 255, 0.4);
+                    animation: fadeInScale 0.4s ease-out;
+                    border: 2px solid rgba(255, 255, 255, 0.2);
+                `;
+                notification.textContent = 'Thank you for your AD browsing';
+
+                // 确保动画样式已添加
+                if (!document.getElementById('notification-animation-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-animation-styles';
+                    style.textContent = `
+                        @keyframes fadeInScale {
+                            0% {
+                                opacity: 0;
+                                transform: translate(-50%, -50%) scale(0.8);
+                            }
+                            100% {
+                                opacity: 1;
+                                transform: translate(-50%, -50%) scale(1);
+                            }
+                        }
+                        @keyframes fadeOutScale {
+                            0% {
+                                opacity: 1;
+                                transform: translate(-50%, -50%) scale(1);
+                            }
+                            100% {
+                                opacity: 0;
+                                transform: translate(-50%, -50%) scale(0.8);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                document.body.appendChild(notification);
+
+                // 3秒后自动关闭
+                setTimeout(() => {
+                    if (notification && notification.parentNode) {
+                        notification.style.animation = 'fadeOutScale 0.4s ease-out';
+                        setTimeout(() => {
+                            if (notification && notification.parentNode) {
+                                notification.remove();
+                            }
+                        }, 400);
+                    }
+                }, 3000);
+
+                console.log('显示感谢广告浏览提示：Thank you for your AD browsing');
             }
 
             // 关键点5：调试模式实现
