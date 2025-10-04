@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-10-04T16:57:36.162780">
-    <meta property="article:modified_time" content="2025-10-04T16:57:36.162780">
+    <meta property="article:published_time" content="2025-10-04T17:02:16.395037">
+    <meta property="article:modified_time" content="2025-10-04T17:02:16.395037">
     <meta name="date" content="2025-10-04">
-    <meta name="last-modified" content="2025-10-04 16:57:36">
+    <meta name="last-modified" content="2025-10-04 17:02:16">
     
     
     <!-- Open Graph Meta Tags -->
@@ -442,8 +442,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2025-10-04T16:57:36.162780",
-        "dateModified": "2025-10-04T16:57:36.162780",
+        "datePublished": "2025-10-04T17:02:16.395037",
+        "dateModified": "2025-10-04T17:02:16.395037",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
@@ -3146,6 +3146,7 @@
                     box-shadow: 0 0 20px rgba(0, 122, 255, 0.6);
                     animation: pulse 2s infinite;
                     pointer-events: none;
+                    z-index: 14000;
                 `;
 
                 // 创建提示信息
@@ -3163,7 +3164,7 @@
                     line-height: 1.4;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
                     pointer-events: none;
-                    z-index: 10001;
+                    z-index: 20000;
                 `;
                 tooltip.textContent = 'Dear reader, as this is a free novel, we kindly ask that you click on an ad and view it for 10 seconds to continue reading. Thank you for your support!';
 
@@ -3185,9 +3186,9 @@
                 overlay.appendChild(tooltip);
                 document.body.appendChild(overlay);
 
-                // 确保广告区域可以被点击（设置较低的z-index）
+                // 确保广告区域可以被点击（设置合适的z-index）
                 targetAd.style.position = 'relative';
-                targetAd.style.zIndex = '10002'; // 高于覆盖层
+                targetAd.style.zIndex = '15000'; // 低于提示弹窗但高于其他元素
                 targetAd.style.pointerEvents = 'auto';
 
                 // 允许点击目标广告
