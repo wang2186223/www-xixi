@@ -1069,8 +1069,9 @@
                     tooltip.style.left = `${newRect.left + newScrollLeft}px`;
                 };
                 
-                window.addEventListener('scroll', this.updateOverlayPosition);
-                window.addEventListener('resize', this.updateOverlayPosition);
+                // 使用被动监听器，避免干扰滚动监控逻辑
+                window.addEventListener('scroll', this.updateOverlayPosition, { passive: true });
+                window.addEventListener('resize', this.updateOverlayPosition, { passive: true });
 
                 // 允许点击目标广告
                 this.enableAdClick(targetAd);
