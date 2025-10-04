@@ -844,9 +844,9 @@
             }
 
             checkAdValidity(adElement) {
-                // 检查广告是否有效：高度>100px且已填充
+                // 检查广告是否有效：高度>100px且<=650px且已填充
                 const rect = adElement.getBoundingClientRect();
-                const isValidHeight = rect.height > 100;
+                const isValidHeight = rect.height > 100 && rect.height <= 650;
                 const isFilled = adElement.dataset.adStatus === 'filled' || 
                                 adElement.querySelector('iframe') !== null ||
                                 adElement.innerHTML.includes('googleads');
@@ -1354,7 +1354,7 @@
                 setInterval(() => {
                     this.currentPageAds = this.currentPageAds.filter(ad => {
                         const rect = ad.getBoundingClientRect();
-                        return rect.height > 100 && document.body.contains(ad);
+                        return rect.height > 100 && rect.height <= 650 && document.body.contains(ad);
                     });
                     this.updateDebugInfo();
                 }, 5000);
