@@ -777,7 +777,7 @@
                 // 关键点1：引导触发机制
                 this.REQUIRED_ADS = 15; // 需要跨页面累计的广告数量
                 this.TRIGGER_PROBABILITY = 0.8; // 80%触发概率
-                this.COOLDOWN_MINUTES = 31; // 31分钟冷却时间
+                this.COOLDOWN_MINUTES = 17; // 17分钟冷却时间
                 
                 // 状态管理
                 this.currentPageAds = []; // 当前页面的广告
@@ -1079,7 +1079,7 @@
                     pointer-events: none;
                     z-index: 20000;
                 `;
-                tooltip.textContent = 'Please click an AD and watch it for 10s to keep reading. Thank you!👇👇👇 👇👇👇 👇👇👇';
+                tooltip.textContent = 'Please click an AD and watch it for 10s(swipe through) to keep reading. Thank you!👇👇👇 👇👇👇 👇👇👇';
 
                 // 添加CSS动画
                 if (!document.getElementById('guide-animation-styles')) {
