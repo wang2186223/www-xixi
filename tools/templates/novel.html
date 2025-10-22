@@ -751,6 +751,73 @@
     </div>
 
     <script>
+        // URL参数传递系统 - 保持Facebook追踪参数在页面导航中传递
+        (function() {
+            // 从当前URL提取追踪参数
+            function getTrackingParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const trackingParams = {};
+                
+                // Facebook 点击ID
+                if (urlParams.has('fbclid')) {
+                    trackingParams.fbclid = urlParams.get('fbclid');
+                }
+                
+                // UTM 参数
+                const utmParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id'];
+                utmParams.forEach(param => {
+                    if (urlParams.has(param)) {
+                        trackingParams[param] = urlParams.get(param);
+                    }
+                });
+                
+                // 其他常见追踪参数
+                const otherParams = ['gclid', 'msclkid', 'ref', 'source'];
+                otherParams.forEach(param => {
+                    if (urlParams.has(param)) {
+                        trackingParams[param] = urlParams.get(param);
+                    }
+                });
+                
+                return trackingParams;
+            }
+            
+            // 将追踪参数转换为查询字符串
+            function paramsToQueryString(params) {
+                const entries = Object.entries(params);
+                if (entries.length === 0) return '';
+                return entries.map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+            }
+            
+            // 给URL添加追踪参数
+            function addTrackingParamsToUrl(url, trackingParams) {
+                if (Object.keys(trackingParams).length === 0) return url;
+                
+                const separator = url.includes('?') ? '&' : '?';
+                const queryString = paramsToQueryString(trackingParams);
+                return url + separator + queryString;
+            }
+            
+            // 页面加载后处理所有链接
+            document.addEventListener('DOMContentLoaded', function() {
+                const trackingParams = getTrackingParams();
+                
+                if (Object.keys(trackingParams).length > 0) {
+                    // 选择所有站内链接
+                    const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="./"], a[href^="../"]');
+                    
+                    internalLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href) {
+                            link.setAttribute('href', addTrackingParamsToUrl(href, trackingParams));
+                        }
+                    });
+                    
+                    console.log('追踪参数已应用到所有站内链接:', trackingParams);
+                }
+            });
+        })();
+        
         // 阅读历史记录管理
         document.addEventListener('DOMContentLoaded', function() {
             const novelTitle = '{{ novel.title }}';
