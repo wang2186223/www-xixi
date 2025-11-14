@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-11-11T18:29:40.839005">
-    <meta property="article:modified_time" content="2025-11-11T18:29:40.839005">
-    <meta name="date" content="2025-11-11">
-    <meta name="last-modified" content="2025-11-11 18:29:40">
+    <meta property="article:published_time" content="2025-11-14T18:09:55.824476">
+    <meta property="article:modified_time" content="2025-11-14T18:09:55.824476">
+    <meta name="date" content="2025-11-14">
+    <meta name="last-modified" content="2025-11-14 18:09:55">
     
     
     <!-- Open Graph Meta Tags -->
@@ -84,6 +84,85 @@
     src="https://www.facebook.com/tr?id=3902941096613787&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
+    
+    <!-- Page Visit Statistics Code -->
+    <script>
+    // Page visit data collection
+    function sendPageVisit() {
+        // First get user IP address
+        getUserIP().then(userIP => {
+            const data = {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                userIP: userIP
+            };
+            
+            // Send data to Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbxvbINCdEawKjvPQxGFWACwJ1NL_PGraB2FntCuJbV7k3QGfNvm_rMG6JB0CjsV1A/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).catch(error => {
+                console.log('Analytics error:', error);
+            });
+        }).catch(error => {
+            // If IP retrieval fails, still send other data
+            const data = {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                userIP: 'Unknown'
+            };
+            
+            fetch('https://script.google.com/macros/s/AKfycbxvbINCdEawKjvPQxGFWACwJ1NL_PGraB2FntCuJbV7k3QGfNvm_rMG6JB0CjsV1A/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).catch(error => {
+                console.log('Analytics error:', error);
+            });
+        });
+    }
+    
+    // Get user IP address
+    async function getUserIP() {
+        try {
+            // Method 1: Use free IP API
+            const response = await fetch('https://api.ipify.org?format=json');
+            const ipData = await response.json();
+            return ipData.ip;
+        } catch (error1) {
+            try {
+                // Method 2: Backup IP API
+                const response = await fetch('https://httpbin.org/ip');
+                const ipData = await response.json();
+                return ipData.origin.split(',')[0].trim();
+            } catch (error2) {
+                try {
+                    // Method 3: Third backup API
+                    const response = await fetch('https://jsonip.com');
+                    const ipData = await response.json();
+                    return ipData.ip;
+                } catch (error3) {
+                    console.log('IP retrieval failed, using Unknown');
+                    return 'Unknown';
+                }
+            }
+        }
+    }
+    
+    // Send visit data after page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', sendPageVisit);
+    } else {
+        sendPageVisit();
+    }
+    </script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -689,79 +768,6 @@
                 
                 <div class="novel-card">
                     <div class="cover-container">
-                        <a href="/novels/my-rejected-mate-regrets/">
-                            <img src="/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png" alt="My Rejected Mate Regrets" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/my-rejected-mate-regrets/" style="color: inherit; text-decoration: none;">My Rejected Mate Regrets</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/my-rejected-mate-regrets/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/the-billionaires-dying-mistress/">
-                            <img src="/covers/the-billionaires-dying-mistress-ScreenShot_2025-10-31_142021_982.png" alt="The Billionaire&#39;s Dying Mistress" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/the-billionaires-dying-mistress/" style="color: inherit; text-decoration: none;">The Billionaire&#39;s Dying Mistress</a></h3>
-                        <p class="novel-desc">A dying mother&#39;s desperate bid to save her secret son collides with a vindictive billionaire&#39;s cruel revenge. When DNA revelations threaten his empire, their forbidden past resurfaces in explosive...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">werewolf</span>
-                            
-                            <span class="tag">alpha</span>
-                            
-                            <span class="tag">pack</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/the-billionaires-dying-mistress/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/when-i-was-your-wife/">
-                            <img src="/covers/when-i-was-your-wife-ScreenShot_2025-10-31_143138_059.png" alt="When I Was Your Wife" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/when-i-was-your-wife/" style="color: inherit; text-decoration: none;">When I Was Your Wife</a></h3>
-                        <p class="novel-desc">Evelyn, a gifted architect trapped in a loveless marriage to cold CEO Nathaniel, uncovers his lingering ties to his ex. When a shocking pregnancy collides with betrayal, she fights to escape his...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">ceo</span>
-                            
-                            <span class="tag">billionaire</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/when-i-was-your-wife/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
                         <a href="/novels/he-wants-me-not-my-girlfriends/">
                             <img src="/covers/he-wants-me-not-my-girlfriends-ScreenShot_2025-11-11_182849_273.png" alt="He Wants Me, Not My Girlfriends" class="novel-cover">
                         </a>
@@ -778,76 +784,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="/novels/he-wants-me-not-my-girlfriends/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">
-                            <img src="/covers/i-caught-my-daughter-in-law-and-her-dog-in-bed-ScreenShot_2025-11-11_182814_278.png" alt="I Caught My Daughter-in-Law and Her Dog in Bed" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" style="color: inherit; text-decoration: none;">I Caught My Daughter-in-Law and Her Dog in Bed</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/my-stepbrother-crept-into-my-bed/">
-                            <img src="/covers/my-stepbrother-crept-into-my-bed-ScreenShot_2025-11-11_182723_411.png" alt="My Stepbrother Crept Into My Bed" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/my-stepbrother-crept-into-my-bed/" style="color: inherit; text-decoration: none;">My Stepbrother Crept Into My Bed</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/my-stepbrother-crept-into-my-bed/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/the-hidden-heiress-divorces-the-ceo/">
-                            <img src="/covers/the-hidden-heiress-divorces-the-ceo-wechat_2025-09-23_154056_444.png" alt="The Hidden Heiress Divorces the CEO" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/the-hidden-heiress-divorces-the-ceo/" style="color: inherit; text-decoration: none;">The Hidden Heiress Divorces the CEO</a></h3>
-                        <p class="novel-desc">I bled for three years as Nathan&#39;s invisible wife. When the plane crash exposed his mistress, I reclaimed my birthright as Kingsley heiress. Now his corporation trembles before my jewels and...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/the-hidden-heiress-divorces-the-ceo/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
+                            <div class="update-date">2025-11-14</div>
                         </div>
                     </div>
                 </div>
@@ -872,7 +809,147 @@
                         </div>
                         <div class="card-footer">
                             <a href="/novels/runaway-heiress-reborn-crushing-ceo-ex/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/the-hidden-heiress-divorces-the-ceo/">
+                            <img src="/covers/the-hidden-heiress-divorces-the-ceo-wechat_2025-09-23_154056_444.png" alt="The Hidden Heiress Divorces the CEO" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/the-hidden-heiress-divorces-the-ceo/" style="color: inherit; text-decoration: none;">The Hidden Heiress Divorces the CEO</a></h3>
+                        <p class="novel-desc">I bled for three years as Nathan&#39;s invisible wife. When the plane crash exposed his mistress, I reclaimed my birthright as Kingsley heiress. Now his corporation trembles before my jewels and...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/the-hidden-heiress-divorces-the-ceo/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">
+                            <img src="/covers/i-caught-my-daughter-in-law-and-her-dog-in-bed-ScreenShot_2025-11-11_182814_278.png" alt="I Caught My Daughter-in-Law and Her Dog in Bed" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" style="color: inherit; text-decoration: none;">I Caught My Daughter-in-Law and Her Dog in Bed</a></h3>
+                        <p class="novel-desc">...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/">
+                            <img src="/covers/ceos-secret-twins-the-zillionaire-heiress-strikes-back-ScreenShot_2025-11-06_124005_719.png" alt="CEO&#39;s Secret Twins： The Zillionaire Heiress Strikes Back" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/" style="color: inherit; text-decoration: none;">CEO&#39;s Secret Twins： The Zillionaire Heiress Strikes Back</a></h3>
+                        <p class="novel-desc">1</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/">
+                            <img src="/covers/billionaires-ex-wifethe-secret-heiresss-divorce-game-ScreenShot_2025-11-14_115622_561.png" alt="Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/" style="color: inherit; text-decoration: none;">Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game</a></h3>
+                        <p class="novel-desc">I bled for three years as Nathaniel&#39;s invisible wife. When his pregnant mistress moved in, I activated my secret identity - the hacker who built his empire. Now with his twins in my womb and his...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/when-i-was-your-wife/">
+                            <img src="/covers/when-i-was-your-wife-ScreenShot_2025-10-31_143138_059.png" alt="When I Was Your Wife" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/when-i-was-your-wife/" style="color: inherit; text-decoration: none;">When I Was Your Wife</a></h3>
+                        <p class="novel-desc">Evelyn, a gifted architect trapped in a loveless marriage to cold CEO Nathaniel, uncovers his lingering ties to his ex. When a shocking pregnancy collides with betrayal, she fights to escape his...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">ceo</span>
+                            
+                            <span class="tag">billionaire</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/when-i-was-your-wife/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/my-rejected-mate-regrets/">
+                            <img src="/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png" alt="My Rejected Mate Regrets" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/my-rejected-mate-regrets/" style="color: inherit; text-decoration: none;">My Rejected Mate Regrets</a></h3>
+                        <p class="novel-desc">...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/my-rejected-mate-regrets/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
                         </div>
                     </div>
                 </div>
@@ -900,100 +977,6 @@
                 
                 <div class="novel-card">
                     <div class="cover-container">
-                        <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">
-                            <img src="/covers/i-caught-my-daughter-in-law-and-her-dog-in-bed-ScreenShot_2025-11-11_182814_278.png" alt="I Caught My Daughter-in-Law and Her Dog in Bed" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" style="color: inherit; text-decoration: none;">I Caught My Daughter-in-Law and Her Dog in Bed</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/he-wants-me-not-my-girlfriends/">
-                            <img src="/covers/he-wants-me-not-my-girlfriends-ScreenShot_2025-11-11_182849_273.png" alt="He Wants Me, Not My Girlfriends" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/he-wants-me-not-my-girlfriends/" style="color: inherit; text-decoration: none;">He Wants Me, Not My Girlfriends</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/he-wants-me-not-my-girlfriends/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/my-rejected-mate-regrets/">
-                            <img src="/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png" alt="My Rejected Mate Regrets" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/my-rejected-mate-regrets/" style="color: inherit; text-decoration: none;">My Rejected Mate Regrets</a></h3>
-                        <p class="novel-desc">...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">romance</span>
-                            
-                            <span class="tag">fantasy</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/my-rejected-mate-regrets/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
-                        <a href="/novels/runaway-heiress-reborn-crushing-ceo-ex/">
-                            <img src="/covers/runaway-heiress-reborn-crushing-ceo-ex-wechat_2025-09-23_153718_051.png" alt="Runaway Heiress Reborn： Crushing CEO Ex" class="novel-cover">
-                        </a>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="novel-title"><a href="/novels/runaway-heiress-reborn-crushing-ceo-ex/" style="color: inherit; text-decoration: none;">Runaway Heiress Reborn： Crushing CEO Ex</a></h3>
-                        <p class="novel-desc">As the invisible wife of tech tycoon Alexander, I endured his cold disdain for years. But when he gifted his mistress the jewels I craved, I served divorce papers and reclaimed my crown as AI&#39;s...</p>
-                        <div class="tags">
-                            
-                            <span class="tag">ceo</span>
-                            
-                            <span class="tag">billionaire</span>
-                            
-                            <span class="tag">contemporary</span>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <a href="/novels/runaway-heiress-reborn-crushing-ceo-ex/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="novel-card">
-                    <div class="cover-container">
                         <a href="/novels/the-billionaires-dying-mistress/">
                             <img src="/covers/the-billionaires-dying-mistress-ScreenShot_2025-10-31_142021_982.png" alt="The Billionaire&#39;s Dying Mistress" class="novel-cover">
                         </a>
@@ -1012,7 +995,101 @@
                         </div>
                         <div class="card-footer">
                             <a href="/novels/the-billionaires-dying-mistress/" class="read-btn">Read Now</a>
-                            <div class="update-date">2025-11-11</div>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/when-i-was-your-wife/">
+                            <img src="/covers/when-i-was-your-wife-ScreenShot_2025-10-31_143138_059.png" alt="When I Was Your Wife" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/when-i-was-your-wife/" style="color: inherit; text-decoration: none;">When I Was Your Wife</a></h3>
+                        <p class="novel-desc">Evelyn, a gifted architect trapped in a loveless marriage to cold CEO Nathaniel, uncovers his lingering ties to his ex. When a shocking pregnancy collides with betrayal, she fights to escape his...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">ceo</span>
+                            
+                            <span class="tag">billionaire</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/when-i-was-your-wife/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/">
+                            <img src="/covers/billionaires-ex-wifethe-secret-heiresss-divorce-game-ScreenShot_2025-11-14_115622_561.png" alt="Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/" style="color: inherit; text-decoration: none;">Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game</a></h3>
+                        <p class="novel-desc">I bled for three years as Nathaniel&#39;s invisible wife. When his pregnant mistress moved in, I activated my secret identity - the hacker who built his empire. Now with his twins in my womb and his...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/my-stepbrother-crept-into-my-bed/">
+                            <img src="/covers/my-stepbrother-crept-into-my-bed-ScreenShot_2025-11-11_182723_411.png" alt="My Stepbrother Crept Into My Bed" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/my-stepbrother-crept-into-my-bed/" style="color: inherit; text-decoration: none;">My Stepbrother Crept Into My Bed</a></h3>
+                        <p class="novel-desc">...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/my-stepbrother-crept-into-my-bed/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="novel-card">
+                    <div class="cover-container">
+                        <a href="/novels/the-hidden-heiress-divorces-the-ceo/">
+                            <img src="/covers/the-hidden-heiress-divorces-the-ceo-wechat_2025-09-23_154056_444.png" alt="The Hidden Heiress Divorces the CEO" class="novel-cover">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="novel-title"><a href="/novels/the-hidden-heiress-divorces-the-ceo/" style="color: inherit; text-decoration: none;">The Hidden Heiress Divorces the CEO</a></h3>
+                        <p class="novel-desc">I bled for three years as Nathan&#39;s invisible wife. When the plane crash exposed his mistress, I reclaimed my birthright as Kingsley heiress. Now his corporation trembles before my jewels and...</p>
+                        <div class="tags">
+                            
+                            <span class="tag">romance</span>
+                            
+                            <span class="tag">fantasy</span>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/novels/the-hidden-heiress-divorces-the-ceo/" class="read-btn">Read Now</a>
+                            <div class="update-date">2025-11-14</div>
                         </div>
                     </div>
                 </div>
@@ -1030,26 +1107,6 @@
                 
                 <div class="category-item">
                     <div class="category-title">
-                        Romance
-                        <a href="/category/romance/">View All</a>
-                    </div>
-                    <ul class="category-books">
-                        
-                        <li><a href="/novels/my-stepbrother-crept-into-my-bed/">My Stepbrother Crept Into My Bed</a></li>
-                        
-                        <li><a href="/novels/he-wants-me-not-my-girlfriends/">He Wants Me, Not My Girlfriends</a></li>
-                        
-                        <li><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">I Caught My Daughter-in-Law and Her Dog in Bed</a></li>
-                        
-                        <li><a href="/novels/the-hidden-heiress-divorces-the-ceo/">The Hidden Heiress Divorces the CEO</a></li>
-                        
-                        <li><a href="/novels/the-billionaires-dying-mistress/">The Billionaire&#39;s Dying Mistress</a></li>
-                        
-                    </ul>
-                </div>
-                
-                <div class="category-item">
-                    <div class="category-title">
                         Fantasy
                         <a href="/category/fantasy/">View All</a>
                     </div>
@@ -1057,13 +1114,33 @@
                         
                         <li><a href="/novels/my-stepbrother-crept-into-my-bed/">My Stepbrother Crept Into My Bed</a></li>
                         
+                        <li><a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/">Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game</a></li>
+                        
+                        <li><a href="/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/">CEO&#39;s Secret Twins： The Zillionaire Heiress Strikes Back</a></li>
+                        
                         <li><a href="/novels/he-wants-me-not-my-girlfriends/">He Wants Me, Not My Girlfriends</a></li>
                         
                         <li><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">I Caught My Daughter-in-Law and Her Dog in Bed</a></li>
                         
-                        <li><a href="/novels/the-hidden-heiress-divorces-the-ceo/">The Hidden Heiress Divorces the CEO</a></li>
+                    </ul>
+                </div>
+                
+                <div class="category-item">
+                    <div class="category-title">
+                        Romance
+                        <a href="/category/romance/">View All</a>
+                    </div>
+                    <ul class="category-books">
                         
-                        <li><a href="/novels/my-rejected-mate-regrets/">My Rejected Mate Regrets</a></li>
+                        <li><a href="/novels/my-stepbrother-crept-into-my-bed/">My Stepbrother Crept Into My Bed</a></li>
+                        
+                        <li><a href="/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/">Billionaire&#39;s Ex-Wife：The Secret Heiress&#39;s Divorce Game</a></li>
+                        
+                        <li><a href="/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/">CEO&#39;s Secret Twins： The Zillionaire Heiress Strikes Back</a></li>
+                        
+                        <li><a href="/novels/he-wants-me-not-my-girlfriends/">He Wants Me, Not My Girlfriends</a></li>
+                        
+                        <li><a href="/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/">I Caught My Daughter-in-Law and Her Dog in Bed</a></li>
                         
                     </ul>
                 </div>
@@ -1090,7 +1167,7 @@
 
     <!-- 隐藏的小说数据，供JavaScript使用 -->
     <script type="application/json" id="novels-data">
-        [{"author": "Unknown Author", "chapters": 10, "cover_url": "/covers/my-stepbrother-crept-into-my-bed-ScreenShot_2025-11-11_182723_411.png", "description": "...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "My Stepbrother Crept Into My Bed", "url": "/novels/my-stepbrother-crept-into-my-bed/"}, {"author": "Unknown Author", "chapters": 10, "cover_url": "/covers/he-wants-me-not-my-girlfriends-ScreenShot_2025-11-11_182849_273.png", "description": "...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "He Wants Me, Not My Girlfriends", "url": "/novels/he-wants-me-not-my-girlfriends/"}, {"author": "Unknown Author", "chapters": 8, "cover_url": "/covers/i-caught-my-daughter-in-law-and-her-dog-in-bed-ScreenShot_2025-11-11_182814_278.png", "description": "...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "I Caught My Daughter-in-Law and Her Dog in Bed", "url": "/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/"}, {"author": "Unknown Author", "chapters": 500, "cover_url": "/covers/the-hidden-heiress-divorces-the-ceo-wechat_2025-09-23_154056_444.png", "description": "I bled for three years as Nathan\u0027s invisible wife. When the plane crash exposed his mistress, I reclaimed my birthright as Kingsley heiress. Now his corporation trembles before my jewels and...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "The Hidden Heiress Divorces the CEO", "url": "/novels/the-hidden-heiress-divorces-the-ceo/"}, {"author": "Unknown Author", "chapters": 507, "cover_url": "/covers/runaway-heiress-reborn-crushing-ceo-ex-wechat_2025-09-23_153718_051.png", "description": "As the invisible wife of tech tycoon Alexander, I endured his cold disdain for years. But when he gifted his mistress the jewels I craved, I served divorce papers and reclaimed my crown as AI\u0027s...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["ceo", "billionaire", "contemporary"], "title": "Runaway Heiress Reborn\uff1a Crushing CEO Ex", "url": "/novels/runaway-heiress-reborn-crushing-ceo-ex/"}, {"author": "Unknown Author", "chapters": 300, "cover_url": "/covers/the-billionaires-dying-mistress-ScreenShot_2025-10-31_142021_982.png", "description": "A dying mother\u0027s desperate bid to save her secret son collides with a vindictive billionaire\u0027s cruel revenge. When DNA revelations threaten his empire, their forbidden past resurfaces in explosive...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["werewolf", "alpha", "pack"], "title": "The Billionaire\u0027s Dying Mistress", "url": "/novels/the-billionaires-dying-mistress/"}, {"author": "Unknown Author", "chapters": 498, "cover_url": "/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png", "description": "...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "My Rejected Mate Regrets", "url": "/novels/my-rejected-mate-regrets/"}, {"author": "Unknown Author", "chapters": 397, "cover_url": "/covers/when-i-was-your-wife-ScreenShot_2025-10-31_143138_059.png", "description": "Evelyn, a gifted architect trapped in a loveless marriage to cold CEO Nathaniel, uncovers his lingering ties to his ex. When a shocking pregnancy collides with betrayal, she fights to escape his...", "last_updated": "2025-11-11", "progress": 0, "rating": 4.5, "tags": ["romance", "ceo", "billionaire"], "title": "When I Was Your Wife", "url": "/novels/when-i-was-your-wife/"}]
+        [{"author": "Unknown Author", "chapters": 10, "cover_url": "/covers/my-stepbrother-crept-into-my-bed-ScreenShot_2025-11-11_182723_411.png", "description": "...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "My Stepbrother Crept Into My Bed", "url": "/novels/my-stepbrother-crept-into-my-bed/"}, {"author": "Unknown Author", "chapters": 500, "cover_url": "/covers/billionaires-ex-wifethe-secret-heiresss-divorce-game-ScreenShot_2025-11-14_115622_561.png", "description": "I bled for three years as Nathaniel\u0027s invisible wife. When his pregnant mistress moved in, I activated my secret identity - the hacker who built his empire. Now with his twins in my womb and his...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "Billionaire\u0027s Ex-Wife\uff1aThe Secret Heiress\u0027s Divorce Game", "url": "/novels/billionaires-ex-wifethe-secret-heiresss-divorce-game/"}, {"author": "Unknown Author", "chapters": 500, "cover_url": "/covers/ceos-secret-twins-the-zillionaire-heiress-strikes-back-ScreenShot_2025-11-06_124005_719.png", "description": "1", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "CEO\u0027s Secret Twins\uff1a The Zillionaire Heiress Strikes Back", "url": "/novels/ceos-secret-twins-the-zillionaire-heiress-strikes-back/"}, {"author": "Unknown Author", "chapters": 10, "cover_url": "/covers/he-wants-me-not-my-girlfriends-ScreenShot_2025-11-11_182849_273.png", "description": "...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "He Wants Me, Not My Girlfriends", "url": "/novels/he-wants-me-not-my-girlfriends/"}, {"author": "Unknown Author", "chapters": 8, "cover_url": "/covers/i-caught-my-daughter-in-law-and-her-dog-in-bed-ScreenShot_2025-11-11_182814_278.png", "description": "...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "I Caught My Daughter-in-Law and Her Dog in Bed", "url": "/novels/i-caught-my-daughter-in-law-and-her-dog-in-bed/"}, {"author": "Unknown Author", "chapters": 500, "cover_url": "/covers/the-hidden-heiress-divorces-the-ceo-wechat_2025-09-23_154056_444.png", "description": "I bled for three years as Nathan\u0027s invisible wife. When the plane crash exposed his mistress, I reclaimed my birthright as Kingsley heiress. Now his corporation trembles before my jewels and...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "The Hidden Heiress Divorces the CEO", "url": "/novels/the-hidden-heiress-divorces-the-ceo/"}, {"author": "Unknown Author", "chapters": 507, "cover_url": "/covers/runaway-heiress-reborn-crushing-ceo-ex-wechat_2025-09-23_153718_051.png", "description": "As the invisible wife of tech tycoon Alexander, I endured his cold disdain for years. But when he gifted his mistress the jewels I craved, I served divorce papers and reclaimed my crown as AI\u0027s...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["ceo", "billionaire", "contemporary"], "title": "Runaway Heiress Reborn\uff1a Crushing CEO Ex", "url": "/novels/runaway-heiress-reborn-crushing-ceo-ex/"}, {"author": "Unknown Author", "chapters": 300, "cover_url": "/covers/the-billionaires-dying-mistress-ScreenShot_2025-10-31_142021_982.png", "description": "A dying mother\u0027s desperate bid to save her secret son collides with a vindictive billionaire\u0027s cruel revenge. When DNA revelations threaten his empire, their forbidden past resurfaces in explosive...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["werewolf", "alpha", "pack"], "title": "The Billionaire\u0027s Dying Mistress", "url": "/novels/the-billionaires-dying-mistress/"}, {"author": "Unknown Author", "chapters": 498, "cover_url": "/covers/my-rejected-mate-regrets-wechat_2025-09-23_153651_246.png", "description": "...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "fantasy"], "title": "My Rejected Mate Regrets", "url": "/novels/my-rejected-mate-regrets/"}, {"author": "Unknown Author", "chapters": 500, "cover_url": "/covers/twisted-obsessionmy-billionaire-uncles-forbidden-lover-ScreenShot_2025-11-14_115837_346.png", "description": "I was just the substitute bride in my uncle\u0027s contract marriage\u2014until he claimed me in the dark. Now I flee with his twins, burning his billion-dollar empire. But when he kneels with a ring,...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance"], "title": "Twisted Obsession\uff1aMy Billionaire Uncle\u0027s Forbidden Lover", "url": "/novels/twisted-obsessionmy-billionaire-uncles-forbidden-lover/"}, {"author": "Unknown Author", "chapters": 397, "cover_url": "/covers/when-i-was-your-wife-ScreenShot_2025-10-31_143138_059.png", "description": "Evelyn, a gifted architect trapped in a loveless marriage to cold CEO Nathaniel, uncovers his lingering ties to his ex. When a shocking pregnancy collides with betrayal, she fights to escape his...", "last_updated": "2025-11-14", "progress": 0, "rating": 4.5, "tags": ["romance", "ceo", "billionaire"], "title": "When I Was Your Wife", "url": "/novels/when-i-was-your-wife/"}]
     </script>
 
     <!-- Footer -->

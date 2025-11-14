@@ -9,10 +9,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2025-11-11T18:29:38.382253">
-    <meta property="article:modified_time" content="2025-11-11T18:29:38.382253">
-    <meta name="date" content="2025-11-11">
-    <meta name="last-modified" content="2025-11-11 18:29:38">
+    <meta property="article:published_time" content="2025-11-14T18:09:51.838406">
+    <meta property="article:modified_time" content="2025-11-14T18:09:51.838406">
+    <meta name="date" content="2025-11-14">
+    <meta name="last-modified" content="2025-11-14 18:09:51">
     
     
     <!-- Open Graph Meta Tags -->
@@ -124,6 +124,221 @@
     src="https://www.facebook.com/tr?id=3902941096613787&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
+    
+    <!-- Page Visit Statistics Code -->
+    <script>
+    // Page visit data collection
+    function sendPageVisit() {
+        // First get user IP address
+        getUserIP().then(userIP => {
+            const data = {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                userIP: userIP
+            };
+            
+            // Send data to Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbxvbINCdEawKjvPQxGFWACwJ1NL_PGraB2FntCuJbV7k3QGfNvm_rMG6JB0CjsV1A/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).catch(error => {
+                console.log('Analytics error:', error);
+            });
+        }).catch(error => {
+            // If IP retrieval fails, still send other data
+            const data = {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                userIP: 'Unknown'
+            };
+            
+            fetch('https://script.google.com/macros/s/AKfycbxvbINCdEawKjvPQxGFWACwJ1NL_PGraB2FntCuJbV7k3QGfNvm_rMG6JB0CjsV1A/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).catch(error => {
+                console.log('Analytics error:', error);
+            });
+        });
+    }
+    
+    // Get user IP address
+    async function getUserIP() {
+        try {
+            // Method 1: Use free IP API
+            const response = await fetch('https://api.ipify.org?format=json');
+            const ipData = await response.json();
+            return ipData.ip;
+        } catch (error1) {
+            try {
+                // Method 2: Backup IP API
+                const response = await fetch('https://httpbin.org/ip');
+                const ipData = await response.json();
+                return ipData.origin.split(',')[0].trim();
+            } catch (error2) {
+                try {
+                    // Method 3: Third backup API
+                    const response = await fetch('https://jsonip.com');
+                    const ipData = await response.json();
+                    return ipData.ip;
+                } catch (error3) {
+                    console.log('IP retrieval failed, using Unknown');
+                    return 'Unknown';
+                }
+            }
+        }
+    }
+    
+    // Send visit data after page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', sendPageVisit);
+    } else {
+        sendPageVisit();
+    }
+    </script>
+    
+    <!-- ===== 广告点击监控（返回检测版）===== -->
+    <script>
+    (function() {
+        'use strict';
+        
+        const CONFIG = {
+            scriptUrl: 'https://script.google.com/macros/s/AKfycbxvbINCdEawKjvPQxGFWACwJ1NL_PGraB2FntCuJbV7k3QGfNvm_rMG6JB0CjsV1A/exec',
+            returnWindow: 50000,  // 50秒返回窗口
+            storageKey: 'ad_total_clicks',
+            debugMode: true
+        };
+        
+        let pageLoadTime = Date.now();
+        let leaveTime = null;
+        let hasAds = false;
+        
+        // 检查广告是否存在
+        function checkAds() {
+            const checkInterval = setInterval(() => {
+                // 检查Google AdSense广告
+                const adsenseAds = document.querySelectorAll('.adsbygoogle');
+                if (adsenseAds.length > 0) {
+                    hasAds = true;
+                    if (CONFIG.debugMode) console.log('[AdClick] ✅ 找到AdSense广告');
+                    clearInterval(checkInterval);
+                }
+            }, 500);
+            setTimeout(() => clearInterval(checkInterval), 10000);
+        }
+        
+        // 页面隐藏时记录离开时间
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                leaveTime = Date.now();
+                if (CONFIG.debugMode) console.log('[AdClick] 👋 用户离开页面');
+            } else {
+                // 页面可见时检查是否应该上报
+                if (leaveTime && hasAds) {
+                    const awayDuration = Date.now() - leaveTime;
+                    if (awayDuration <= CONFIG.returnWindow) {
+                        if (CONFIG.debugMode) console.log(`[AdClick] ✅ 用户返回（离开${Math.round(awayDuration/1000)}秒），记录点击`);
+                        reportClick();
+                    } else {
+                        if (CONFIG.debugMode) console.log(`[AdClick] ⏭️ 离开超过50秒（${Math.round(awayDuration/1000)}秒），忽略`);
+                    }
+                    leaveTime = null;
+                }
+            }
+        });
+        
+        // 上报广告点击
+        function reportClick() {
+            const totalClicks = incrementClicks();
+            const stayDuration = Math.round((Date.now() - pageLoadTime) / 1000);
+            
+            // 获取第一个广告信息
+            const firstAd = document.querySelector('.adsbygoogle');
+            const adSlot = firstAd ? (firstAd.getAttribute('data-ad-slot') || 'unknown') : 'unknown';
+            const adPosition = firstAd ? Math.round(firstAd.getBoundingClientRect().top + window.scrollY) : 0;
+            
+            const data = {
+                timestamp: new Date().toISOString(),
+                eventType: 'ad_click',
+                novel: 'The Hidden Heiress Divorces the CEO',
+                chapter: '283',
+                pageUrl: window.location.href,
+                adSlot: adSlot,
+                adPosition: adPosition,
+                scrollDepth: Math.round(window.scrollY),
+                userIP: '',
+                userAgent: navigator.userAgent,
+                screenSize: `${window.screen.width}x${window.screen.height}`,
+                stayDuration: stayDuration,
+                totalClickCount: totalClicks,
+                clickSource: 'return_50s'
+            };
+            
+            sendData(data);
+        }
+        
+        // 发送数据
+        async function sendData(data) {
+            try {
+                if (typeof getUserIP === 'function') {
+                    data.userIP = await getUserIP();
+                } else {
+                    try {
+                        const res = await fetch('https://api.ipify.org?format=json');
+                        const json = await res.json();
+                        data.userIP = json.ip;
+                    } catch (e) {
+                        data.userIP = 'Unknown';
+                    }
+                }
+                
+                const payload = JSON.stringify(data);
+                
+                fetch(CONFIG.scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type': 'application/json'},
+                    body: payload
+                });
+                
+                if (CONFIG.debugMode) console.log('[AdClick] 📡 已上报');
+                
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'ad_click', {
+                        ad_slot: data.adSlot,
+                        total_clicks: data.totalClickCount
+                    });
+                }
+            } catch (error) {
+                if (CONFIG.debugMode) console.log('[AdClick] ❌ 发送失败:', error);
+            }
+        }
+        
+        // 累计点击次数
+        function incrementClicks() {
+            try {
+                let total = parseInt(localStorage.getItem(CONFIG.storageKey) || '0');
+                total++;
+                localStorage.setItem(CONFIG.storageKey, total.toString());
+                return total;
+            } catch (e) {
+                return 0;
+            }
+        }
+        
+        // 初始化
+        checkAds();
+        if (CONFIG.debugMode) console.log('[AdClick] 🚀 监控启动：离开50秒内返回 = 广告点击');
+        
+    })();
+    </script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -442,8 +657,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2025-11-11T18:29:38.382253",
-        "dateModified": "2025-11-11T18:29:38.382253",
+        "datePublished": "2025-11-14T18:09:51.838406",
+        "dateModified": "2025-11-14T18:09:51.838406",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
