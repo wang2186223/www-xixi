@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if novel.title %}{{ novel.title }} - NovelVibe{% else %}Book Details - NovelVibe{% endif %}</title>
+    <title>{% if novel.title %}{{ novel.title }} - Free Novel Online | Read Light Novel - NovelVibe{% else %}Book Details - Free Novel Online - NovelVibe{% endif %}</title>
     <meta name="description" content="{% if novel.description %}{{ novel.description }}{% else %}Read free werewolf romance novels on NovelVibe{% endif %}">
-    <meta name="keywords" content="{% if novel.tags %}{{ novel.tags|join(', ') }}{% else %}werewolf, romance, free novels{% endif %}">
+    <meta name="keywords" content="free novel online, {% if novel.tags %}{{ novel.tags|join(', ') }}, {% endif %}light novel, apothecary diaries light novel, heavens official blessing novel, dune novel, novel updates, read novel free, romance novel, graphic novel, school spirits graphic novel, visual novel, novel master, novel synonym, how many words in a novel, online novel, free novels">
+    <meta name="robots" content="index, follow">
     
     <!-- Time Meta Tags for SEO -->
     {% if timestamps %}
@@ -666,6 +667,86 @@
     }
     </script>
     {% endif %}
+    
+    <!-- Breadcrumb Navigation Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{{ site_url }}/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{ novel.title }}",
+                "item": "{{ canonical_url }}"
+            }
+        ]
+    }
+    </script>
+    
+    <!-- FAQ Schema for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is a novel?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A novel is a long narrative work of fiction. {{ novel.title }} is available as a free novel online on NovelVibe. We offer various types including light novels (like Apothecary Diaries light novel, Heaven's Official Blessing novel), romance novels, graphic novels (School Spirits, Forever), visual novels, and classics like Dune novel."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I read {{ novel.title }} free online?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! {{ novel.title }} is completely free to read online at NovelVibe. All {{ novel.total_chapters }} chapters are available without registration. Start reading this free novel online now. We're your novel master for unlimited reading."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How many words in a novel?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A typical novel contains 50,000-100,000 words. {{ novel.title }} with {{ novel.total_chapters }} chapters offers substantial content. Light novels average 40,000-50,000 words, while epic novels like Dune can exceed 120,000 words."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How many chapters does {{ novel.title }} have?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "{{ novel.title }} currently has {{ novel.total_chapters }} chapters available to read free online. Check back regularly for novel updates and new chapters from our novel master collection."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is a graphic novel?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A graphic novel is a book-length comic narrative. Popular examples include School Spirits graphic novel and Forever graphic novel. While {{ novel.title }} is a text-based novel, our platform offers various free novels online including romance novels, light novels, and visual novels."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What are novel synonyms?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Novel synonyms include: book, story, fiction, narrative, tale, romance, literature, work. {{ novel.title }} represents quality fiction available as a free novel online on our novel master platform."
+                }
+            }
+        ]
+    }
+    </script>
     
     <!-- Ahrefs Analytics -->
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="E2ZZe80dfDLAEGhT2iI37A" async></script>
