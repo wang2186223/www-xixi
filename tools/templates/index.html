@@ -768,7 +768,7 @@
                 <h2 class="section-title">Recommended For You</h2>
             </div>
             <div class="cards-grid" id="recommended-grid">
-                <!-- 默认展示8本小说 -->
+                <!-- 默认展示30本小说 -->
                 {% for novel in recommended_novels %}
                 <div class="novel-card">
                     <div class="cover-container">
@@ -840,14 +840,14 @@
         <section class="categories">
             <div class="section-header">
                 <h2 class="section-title">Browse by Category</h2>
-                <a href="#" class="view-more">View All Categories</a>
+                <a href="/all-novels/" class="view-more">View All Categories</a>
             </div>
             <div class="category-list">
                 {% for category in categories %}
                 <div class="category-item">
                     <div class="category-title">
                         {{ category.name }}
-                        <a href="{{ category.url }}">View All</a>
+                        <a href="/all-novels/">View All</a>
                     </div>
                     <ul class="category-books">
                         {% for book in category.books %}
@@ -1089,7 +1089,7 @@
 
         // Recommended For You - Read More 功能
         let allNovels = [];
-        let currentIndex = 8; // 已经显示了初始的8本
+        let currentIndex = 30; // 已经显示了初始的30本
         const batchSize = 8;
 
         function loadNovelsData() {
@@ -1098,10 +1098,10 @@
                 if (dataElement && dataElement.textContent.trim()) {
                     allNovels = JSON.parse(dataElement.textContent);
                     console.log('成功加载小说数据：', allNovels.length, '本');
-                    // 随机打乱小说顺序，但保持前8本不变（已经在模板中显示）
-                    const remainingNovels = allNovels.slice(8);
+                    // 随机打乱小说顺序，但保持前30本不变（已经在模板中显示）
+                    const remainingNovels = allNovels.slice(30);
                     shuffleArray(remainingNovels);
-                    allNovels = [...allNovels.slice(0, 8), ...remainingNovels];
+                    allNovels = [...allNovels.slice(0, 30), ...remainingNovels];
                 } else {
                     console.error('未找到小说数据或数据为空');
                     allNovels = [];
@@ -1201,7 +1201,7 @@
                 setTimeout(() => {
                     console.log('小说数据加载状态：', allNovels.length, '本小说');
                     // 只有在确实没有更多小说时才隐藏按钮
-                    if (allNovels.length <= 8) {
+                    if (allNovels.length <= 30) {
                         readMoreBtn.style.display = 'none';
                         console.log('小说数量不足，隐藏Read More按钮');
                     } else {

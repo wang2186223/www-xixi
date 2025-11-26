@@ -166,12 +166,16 @@ class WebsiteBuilder:
         print("\n=== 第4步: 生成首页 ===")
         self.build_homepage(novels)
         
+        # 生成所有小说页面
+        print("\n=== 第5步: 生成所有小说页面 ===")
+        self.build_all_novels_page(novels)
+        
         # 4. 生成站点地图
-        print("\n=== 第5步: 生成站点地图 ===")
+        print("\n=== 第6步: 生成站点地图 ===")
         self.generate_sitemap(novels)
         
         # 5. 复制静态资源
-        print("\n=== 第6步: 复制静态资源 ===")
+        print("\n=== 第7步: 复制静态资源 ===")
         self.copy_static_assets()
         
         print(f"\n✅ 网站构建完成!")
@@ -330,8 +334,8 @@ class WebsiteBuilder:
         new_novels = self.prepare_novel_cards(novel_list[:12])      # 最新12本
         popular_novels = self.prepare_novel_cards(novel_list[:12])  # 热门12本（暂时用最新的）
         
-        # 推荐小说：随机选择8本作为默认显示
-        recommended_count = min(8, len(novel_list))
+        # 推荐小说：随机选择30本作为默认显示
+        recommended_count = min(30, len(novel_list))
         if len(novel_list) > 0:
             recommended_novels = self.prepare_novel_cards(random.sample(novel_list, recommended_count))
         else:
@@ -369,6 +373,34 @@ class WebsiteBuilder:
         
         # 保存首页
         output_file = self.output_path / 'index.html'
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+    
+    def build_all_novels_page(self, novels: Dict):
+        """生成所有小说页面"""
+        template = self.env.get_template('all-novels.html')
+        
+        # 准备所有小说数据
+        novel_list = list(novels.values())
+        
+        # 按最后更新时间排序
+        novel_list.sort(key=lambda x: x.get('last_updated', ''), reverse=True)
+        
+        # 准备小说卡片数据
+        all_novels = self.prepare_novel_cards(novel_list)
+        
+        # 渲染页面
+        html_content = template.render(
+            all_novels=all_novels,
+            site_url=self.site_url
+        )
+        
+        # 创建all-novels目录
+        all_novels_dir = self.output_path / 'all-novels'
+        all_novels_dir.mkdir(exist_ok=True)
+        
+        # 保存页面
+        output_file = all_novels_dir / 'index.html'
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
             
