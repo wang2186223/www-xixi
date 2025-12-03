@@ -206,7 +206,7 @@ class WebsiteBuilder:
         # 准备章节数据
         chapters = []
         for i, chapter in enumerate(novel_data['chapters']):
-            # 使用绝对路径而不是相对路径
+            # 使用绝对路径，不带 .html 后缀 (SEO 友好)
             chapter_url = f"/novels/{novel_data['slug']}/chapter-{chapter['number']}"
             chapters.append({
                 'number': chapter['number'],
@@ -304,7 +304,7 @@ class WebsiteBuilder:
                 timestamps=timestamps,
                 prev_chapter=prev_chapter,
                 next_chapter=next_chapter,
-                canonical_url=f"{self.site_url}/novels/{novel_data['slug']}/chapter-{chapter['number']}.html",
+                canonical_url=f"{self.site_url}/novels/{novel_data['slug']}/chapter-{chapter['number']}",
                 site_url=self.site_url
             )
             
@@ -495,10 +495,10 @@ class WebsiteBuilder:
             # 小说详情页
             self.add_url_to_sitemap(urlset, novel_url, priority='0.8', changefreq='weekly')
             
-            # 只添加前10个章节到sitemap中，减少文件大小
+            # 只添加前10个章节到sitemap中,减少文件大小
             chapters_to_include = novel_data['chapters'][:10]  # 只取前10个章节
             for chapter in chapters_to_include:
-                chapter_url = f"novels/{novel_data['slug']}/chapter-{chapter['number']}.html"
+                chapter_url = f"novels/{novel_data['slug']}/chapter-{chapter['number']}"
                 self.add_url_to_sitemap(urlset, chapter_url, priority='0.6', changefreq='monthly')
                 
         # 保存站点地图
