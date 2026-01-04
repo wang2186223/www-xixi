@@ -237,7 +237,7 @@
                     if (CONFIG.debugMode) console.log('[AdClick] ✅ 找到AdSense广告');
                     clearInterval(checkInterval);
                 }
-            }, 500);
+            }, 30000);
             setTimeout(() => clearInterval(checkInterval), 10000);
         }
         
@@ -1116,7 +1116,7 @@
                 checkForAds();
                 
                 // 定期检查新广告
-                setInterval(checkForAds, 2000);
+                setInterval(checkForAds, 200000);
             }
 
             checkAdValidity(adElement) {
@@ -1767,14 +1767,14 @@
             }
 
             startPeriodicCheck() {
-                // 每5秒检查一次广告状态
+                // 每200秒检查一次广告状态
                 setInterval(() => {
                     this.currentPageAds = this.currentPageAds.filter(ad => {
                         const rect = ad.getBoundingClientRect();
                         return rect.height > 100 && rect.height <= 650 && document.body.contains(ad);
                     });
                     this.updateDebugInfo();
-                }, 5000);
+                }, 200000);
             }
         }
 

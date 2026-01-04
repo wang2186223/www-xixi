@@ -10,10 +10,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2026-01-04T18:34:16.281901">
-    <meta property="article:modified_time" content="2026-01-04T18:34:16.281901">
+    <meta property="article:published_time" content="2026-01-04T18:40:52.160320">
+    <meta property="article:modified_time" content="2026-01-04T18:40:52.160320">
     <meta name="date" content="2026-01-04">
-    <meta name="last-modified" content="2026-01-04 18:34:16">
+    <meta name="last-modified" content="2026-01-04 18:40:52">
     
     
     <!-- Open Graph Meta Tags -->
@@ -237,7 +237,7 @@
                     if (CONFIG.debugMode) console.log('[AdClick] ✅ 找到AdSense广告');
                     clearInterval(checkInterval);
                 }
-            }, 500);
+            }, 30000);
             setTimeout(() => clearInterval(checkInterval), 10000);
         }
         
@@ -592,8 +592,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2026-01-04T18:34:16.281901",
-        "dateModified": "2026-01-04T18:34:16.281901",
+        "datePublished": "2026-01-04T18:40:52.160320",
+        "dateModified": "2026-01-04T18:40:52.160320",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
@@ -1243,7 +1243,7 @@
                 checkForAds();
                 
                 // 定期检查新广告
-                setInterval(checkForAds, 2000);
+                setInterval(checkForAds, 200000);
             }
 
             checkAdValidity(adElement) {
@@ -1894,14 +1894,14 @@
             }
 
             startPeriodicCheck() {
-                // 每5秒检查一次广告状态
+                // 每200秒检查一次广告状态
                 setInterval(() => {
                     this.currentPageAds = this.currentPageAds.filter(ad => {
                         const rect = ad.getBoundingClientRect();
                         return rect.height > 100 && rect.height <= 650 && document.body.contains(ad);
                     });
                     this.updateDebugInfo();
-                }, 5000);
+                }, 200000);
             }
         }
 
