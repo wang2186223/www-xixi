@@ -930,8 +930,13 @@
                         // Parse current next URL
                         const url = new URL(this.href, window.location.origin);
                         
-                        // Construct return URL with original domain (same path structure)
-                        const returnUrl = `https://${crossSiteRef}${url.pathname}${url.search}${url.hash}`;
+                        // Remove 'ref' parameter from query string
+                        const searchParams = new URLSearchParams(url.search);
+                        searchParams.delete('ref');
+                        const cleanSearch = searchParams.toString() ? '?' + searchParams.toString() : '';
+                        
+                        // Construct return URL with original domain (same path structure, without ref parameter)
+                        const returnUrl = `https://${crossSiteRef}${url.pathname}${cleanSearch}${url.hash}`;
                         
                         // Clear cross-site tracking data
                         localStorage.removeItem('crossSiteRef');
