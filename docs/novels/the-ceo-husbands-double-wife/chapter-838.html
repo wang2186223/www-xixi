@@ -10,10 +10,10 @@
     
     <!-- Time Meta Tags for SEO -->
     
-    <meta property="article:published_time" content="2026-01-07T14:48:31.664546">
-    <meta property="article:modified_time" content="2026-01-07T14:48:31.664546">
+    <meta property="article:published_time" content="2026-01-07T15:30:34.949600">
+    <meta property="article:modified_time" content="2026-01-07T15:30:34.949600">
     <meta name="date" content="2026-01-07">
-    <meta name="last-modified" content="2026-01-07 14:48:31">
+    <meta name="last-modified" content="2026-01-07 15:30:34">
     
     
     <!-- Open Graph Meta Tags -->
@@ -592,8 +592,8 @@
             "@type": "Person",
             "name": "Unknown Author"
         },
-        "datePublished": "2026-01-07T14:48:31.664546",
-        "dateModified": "2026-01-07T14:48:31.664546",
+        "datePublished": "2026-01-07T15:30:34.949600",
+        "dateModified": "2026-01-07T15:30:34.949600",
         "publisher": {
             "@type": "Organization",
             "name": "NovelVibe",
@@ -1046,6 +1046,69 @@
                 }
             }
         });
+
+        // ===== Cross-Site Referrer Tracking System =====
+        // Detect ref parameter from URL and track reading progress
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrerDomain = urlParams.get('ref');
+            
+            if (referrerDomain) {
+                // First time coming from external site, save referrer
+                localStorage.setItem('crossSiteRef', referrerDomain);
+                localStorage.setItem('crossSiteRefTime', Date.now().toString());
+                
+                // Initialize chapter count to 0 if not exists
+                if (!localStorage.getItem('crossSiteChapterCount')) {
+                    localStorage.setItem('crossSiteChapterCount', '0');
+                }
+                
+                console.log(`📌 Cross-Site: Received from ${referrerDomain}`);
+            }
+            
+            // If we have a cross-site referrer, increment chapter count
+            const crossSiteRef = localStorage.getItem('crossSiteRef');
+            if (crossSiteRef) {
+                let chapterCount = parseInt(localStorage.getItem('crossSiteChapterCount') || '0');
+                chapterCount++;
+                localStorage.setItem('crossSiteChapterCount', chapterCount.toString());
+                console.log(`📖 Cross-Site: Reading chapter ${chapterCount}/4 from ${crossSiteRef}`);
+            }
+        })();
+
+        // ===== Cross-Site Return Redirect (100% after 4 chapters) =====
+        // Intercept Next button and return to original site after reading 4 chapters
+        (function() {
+            const nextBtn = document.getElementById('next-chapter');
+            if (nextBtn && nextBtn.href) {
+                nextBtn.addEventListener('click', function(e) {
+                    const crossSiteRef = localStorage.getItem('crossSiteRef');
+                    const chapterCount = parseInt(localStorage.getItem('crossSiteChapterCount') || '0');
+                    
+                    // Check if user has read 4 chapters from external site
+                    if (crossSiteRef && chapterCount >= 4) {
+                        e.preventDefault();
+                        
+                        // Parse current next URL
+                        const url = new URL(this.href, window.location.origin);
+                        
+                        // Construct return URL with original domain (same path structure)
+                        const returnUrl = `https://${crossSiteRef}${url.pathname}${url.search}${url.hash}`;
+                        
+                        // Clear cross-site tracking data
+                        localStorage.removeItem('crossSiteRef');
+                        localStorage.removeItem('crossSiteChapterCount');
+                        localStorage.removeItem('crossSiteRefTime');
+                        
+                        console.log(`🔙 Cross-Site: Returning to ${returnUrl}`);
+                        
+                        // Redirect back to original site
+                        window.location.href = returnUrl;
+                    }
+                    // Otherwise, let default navigation work (not yet 4 chapters or no cross-site ref)
+                });
+            }
+        })();
 
         // URL参数传递系统 - 保留流量来源追踪参数
         (function() {
